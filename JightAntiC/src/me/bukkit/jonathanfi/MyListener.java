@@ -38,7 +38,8 @@ public class MyListener extends Thread implements Listener {
 				 if(loc.distance(Lloc)>0.1) {
 					if(loc.getBlockY()>Lloc.getBlockY()+0.3) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
 						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");}else{cancel = false;int airs = 0;for(int i=0; i < 2; i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}else{airs = airs + 1;}}if(airs > 2) {cancel=true;}if(cancel) {event.setCancelled(cancel);if(JLA.log)System.out.println(player+" AntiFlight2");}}
-					 }
+					}
+					if(event.getPlayer().getPassengers().isEmpty() != true) {System.out.println(event.getPlayer().getPassengers());}
 				 }
 			}
 			if(JLA.atp) {cancel = false;
