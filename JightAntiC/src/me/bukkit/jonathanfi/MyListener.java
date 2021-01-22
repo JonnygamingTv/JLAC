@@ -49,7 +49,7 @@ public class MyListener extends Thread implements Listener {
 				}
 				if(cancel) {loc = Lloc;event.setCancelled(cancel);if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}if(JLA.log)System.out.println("AntiTP for: "+player);}
 			}
-			if(cancel != true) {
+			if(cancel != true && JLA.bmps>0) {
 				Calendar c1 = Calendar.getInstance();
 				Date Dnow = c1.getTime(); 
 				if(PlayerDPS.get(player) != null) {
