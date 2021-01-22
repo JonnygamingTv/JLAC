@@ -12,9 +12,9 @@ public class JLA extends JavaPlugin {
 	public static boolean aka = false;
 	public static boolean ar = false;
 	public static boolean atp = false;
-	public static float ais = 0;
-	public static float acl = 0;
-	public static int bmps = 5;
+	public static int ais = 0;
+	public static int acl = 0;
+	public static float bmps = 5;
 	public static boolean log = false;
 	public void onEnable() {
 		getLogger().info("JLAC loaded!");
