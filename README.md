@@ -4,7 +4,7 @@ Lightweight anticheat spigot plugin for Minecraft
 ## Help
 /jla - jla.checkcommand
 
-## Ignore certified players
+### Ignore certified players
 Permission: jla.cert
 Or use: /jla certify <player>
 
