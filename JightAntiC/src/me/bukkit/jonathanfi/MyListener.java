@@ -29,15 +29,14 @@ public class MyListener extends Thread implements Listener {
 		Location loc = event.getPlayer().getLocation();
 		if(PlayerData.get(player) != null) {
 			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);System.out.println(loc.distance(Lloc));
-			boolean cancel = false;
 			if(JLA.aflight) {
-				 if(loc.distance(Lloc)>0.3) {
+				 if(loc.distance(Lloc)>0.1) {
 					if(loc.getBlockY()>Lloc.getBlockY()) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
-						 if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);}
+						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);}
 					 }
 				 }
 			}
-			if(JLA.atp) {
+			if(JLA.atp) {boolean cancel = false;
 				if(loc.distance(Lloc)>2) {cancel = true;
 					if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(loc.getBlockX(),Lloc.getBlockY(),Lloc.getBlockZ()).getType() == Material.AIR) {cancel = false;}
 					if(loc.getBlockY() < Lloc.getBlockY()-1)for(int i=0;i < Lloc.getBlockY()-loc.getBlockY(); i++) {if(Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-i,Lloc.getBlockZ()).getType() != Material.AIR) {cancel = true;}}
