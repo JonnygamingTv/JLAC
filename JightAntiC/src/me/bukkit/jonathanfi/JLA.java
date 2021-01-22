@@ -1,4 +1,9 @@
 package me.bukkit.jonathanfi;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,6 +21,7 @@ public class JLA extends JavaPlugin {
 	public static int acl = 0;
 	public static float bmps = 5;
 	public static boolean log = false;
+	private static Map<String, List<String>> actionList = new HashMap<String, List<String>>();
 	public void onEnable() {
 		getLogger().info("JLAC loaded!");
 		config.addDefault("antiFlight", false);
@@ -44,8 +50,8 @@ public class JLA extends JavaPlugin {
 		if(config.getInt("antiCombatLeave") > 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
 		if(config.getInt("blocksMovePerSecond")>0) {bmps=config.getInt("blocksMovePerSecond");}
 		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
-			//String actions = config.getString("action");
-			//for(int i=0; i<actions.length();i++) {if(actions.(i, i+1) == ",") {}}
+			List<String>actions = Arrays.asList(config.getString("action").split(","));
+			actionList.put("-action",actions);
 		}
 		getLogger().info(config.getString("action"));
 		if(atp)getLogger().info("AntiTP");
