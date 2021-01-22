@@ -30,9 +30,9 @@ public class MyListener extends Thread implements Listener {
 			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);System.out.println(loc.distance(Lloc));
 			boolean cancel = false;
 			if(JLA.aflight) {
-				 if(loc.distance(Lloc)>0.2) {
+				 if(loc.distance(Lloc)>0.4) {
 					 if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
-						 if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY(),Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);}
+						 if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);}
 					 }
 				 }
 			}
