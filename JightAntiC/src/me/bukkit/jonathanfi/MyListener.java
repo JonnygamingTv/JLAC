@@ -10,6 +10,7 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -102,11 +103,15 @@ public class MyListener extends Thread implements Listener {
 					if(JLA.log)System.out.println(event.getDamager().getName()+" is using Reach?");
 				}
 			}
+			if(JLA.aka>0) {//thanks https://bukkit.org/threads/get-if-player-is-looking-at-an-entity.106661/!
+				Player player = (Player) event.getDamager();
+				if(JLA.aka==1) {if(player.getEyeLocation() != event.getEntity().getLocation()) {event.setCancelled(true);}}
+			}
 			//if(event.getDamager().getLocation() > event.getEntity().getLocation()) {}
 			if(event.getEntity().getType() == EntityType.PLAYER && JLA.acl != 0) {
 				final String player = event.getEntity().getName();
 				Calendar c1 = Calendar.getInstance();
-				Date Dnow = c1.getTime(); 
+				Date Dnow = c1.getTime();
 				if(PCD.get(player) == null){PCD.get(player).add(Dnow.getTime());}
 				PCD.get(player).set(0, Dnow.getTime());
 			}
