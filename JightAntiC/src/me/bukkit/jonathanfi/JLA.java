@@ -38,8 +38,9 @@ public class JLA extends JavaPlugin {
 		if(config.getBoolean("antiAura")) {aka = true;getLogger().info("AntiAura");}
 		if(config.getBoolean("antiReach")) {ar = true;getLogger().info("AntiReach");}
 		if(config.getBoolean("antiTP")) {atp = true;}
-		if(config.getInt("antiItemSpam") != 0) {ais = config.getInt("antiItemSpam");getLogger().info("AntiItemSpam="+ais);}
-		if(config.getInt("antiCombatLeave") != 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
+		if(config.getInt("antiItemSpam") > 0) {ais = config.getInt("antiItemSpam");}
+		getLogger().info("AntiItemSpam="+ais);
+		if(config.getInt("antiCombatLeave") > 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
 		if(config.getInt("blocksMovePerSecond")>0) {bmps=config.getInt("blocksMovePerSecond");}
 		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
 			//String actions = config.getString("action");
