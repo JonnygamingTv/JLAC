@@ -1,0 +1,12 @@
+main: me.bukkit.jonathanfi.JLA
+name: JLA
+version: 1.0
+author: jonathanfi
+description: JonHosting.com
+api-version: 1.13
+commands:
+  jla:
+    description: Test command
+    usage: jla
+    permission: jla.checkcommand
+    permission-message: You don't have permission to use this command.
