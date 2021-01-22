@@ -63,7 +63,7 @@ public class JLA extends JavaPlugin {
             String label,
             String[] args) {
 		if (command.getName().equalsIgnoreCase("jla")) {
-			if(args[0] != null)if(args[1] != null)if(args[0] == "itemspam"){ais = Integer.parseInt(args[1]);}
+			if(args != null)if(args[0] != null)if(args[1] != null)if(args[0] == "itemspam"){ais = Integer.parseInt(args[1]);}
 			sender.sendMessage("/jla itemspam <cooldown>");
 			return true;
 		}
