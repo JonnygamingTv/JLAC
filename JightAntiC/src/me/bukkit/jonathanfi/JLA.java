@@ -76,7 +76,7 @@ public class JLA extends JavaPlugin {
             String[] args) {
 		if (command.getName().equalsIgnoreCase("jla")) {
 			if(args.length>0 && args != null)if(args[0] != null)if(args[1] != null)if(args[0] == "itemspam"){ais = Integer.parseInt(args[1]);}else if(args[0] == "CombatLeave"){acl = Integer.parseInt(args[1]);}
-			sender.sendMessage("§a§lJLA\n\n§b/jla itemspam <cooldown ms>§c\n/jla CombatLeave <cooldown ms>\n\n§d1 ms = 0.001 seconds");
+			sender.sendMessage("§a§lJLA\nby §4jonathanfi\n \n§b/jla itemspam <cooldown ms>§c\n/jla CombatLeave <cooldown ms>\n \n§d1 ms = 0.001 seconds");
 			return true;
 		}
 		return false;
