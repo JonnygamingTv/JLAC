@@ -23,9 +23,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class MyListener extends Thread implements Listener {
-	public static Map<String, Location> PlayerData = new HashMap<String, Location>();//List<Location>
-	public static Map<String, List<Object>> PlayerDPS = new HashMap<String, List<Object>>();
-	public static Object PObj = new Object();
+	private static Map<String, Location> PlayerData = new HashMap<String, Location>();//List<Location>
+	private static Map<String, List<Object>> PlayerDPS = new HashMap<String, List<Object>>();
+	//public static Object PObj = new Object();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		final String player = event.getPlayer().getName();
@@ -118,7 +118,10 @@ public class MyListener extends Thread implements Listener {
 		if(PlayerData.get(player) != null) {
 			PlayerData.remove(player);
 		}
-		if(PCD.containsKey(player) && PCD.get(player) != null && JLA.acl != 0) {
+		if(PlayerDPS.get(player) != null) {
+			PlayerDPS.remove(player);
+		}
+		if(PCD.get(player) != null && JLA.acl != 0) {
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime();
 			if(Dnow.getTime() - PCD.get(player).get(0) < JLA.acl) {
