@@ -56,7 +56,7 @@ public class MyListener extends Thread implements Listener {
 					Long Ts = PlayerDPS.get(player).get(1);
 					if(Dnow.getTime() - Ts > 1000) {Ts = Dnow.getTime();d=(long) 0;}
 					float dps = d/Ts;
-					if(dps > 5) {
+					if(dps > JLA.bmps) {
 						event.setCancelled(true);
 						if(JLA.log)System.out.println("AntiDPS for: "+player);
 					}
@@ -119,17 +119,17 @@ public class MyListener extends Thread implements Listener {
 			}
 		}
 	}
-	public static Map<String, List<Long>> PDD = new HashMap<String, List<Long>>();
+	public static Map<String, Long> PDD = new HashMap<String, Long>();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPDrop(PlayerDropItemEvent event) {
 		if(JLA.ais != 0) {
 			final String player = event.getPlayer().getName();
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime(); 
-			if(PDD.containsKey(player) && PDD.get(player) != null) {if(PDD.get(player).get(0) != null){
-				if(JLA.ais > (Dnow.getTime() - PDD.get(player).get(0))) {event.setCancelled(true);return;}
-			}}if(PDD.get(player) == null){PDD.get(player).add(Dnow.getTime());}
-			PDD.get(player).set(0, Dnow.getTime());
+			if(PDD.get(player) != null){
+				if(JLA.ais > (Dnow.getTime() - PDD.get(player))) {event.setCancelled(true);return;}
+			}
+			PDD.put(player,Dnow.getTime());
 		}
 	}
 	@EventHandler (priority = EventPriority.LOW)
