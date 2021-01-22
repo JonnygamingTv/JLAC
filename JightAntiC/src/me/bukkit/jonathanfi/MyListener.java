@@ -116,6 +116,7 @@ public class MyListener extends Thread implements Listener {
 			Date Dnow = c1.getTime();
 			if(Dnow.getTime() - PCD.get(player).get(0) < JLA.acl) {
 				event.getPlayer().setHealth(0);
+				PCD.remove(player);
 			}
 		}
 	}
