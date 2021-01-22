@@ -14,7 +14,7 @@ public class JLA extends JavaPlugin {
 	FileConfiguration config = getConfig();
 	public static boolean aflight = false;
 	public static boolean akb = false;
-	public static boolean aka = false;
+	public static int aka = 0;
 	public static boolean ar = false;
 	public static boolean atp = false;
 	public static int ais = 0;
@@ -27,7 +27,7 @@ public class JLA extends JavaPlugin {
 		config.addDefault("antiFlight", false);
 		config.addDefault("antiTP", false);
 		config.addDefault("antiKnockback", false);
-		config.addDefault("antiAura", false);
+		config.addDefault("antiAura", 1);
 		config.addDefault("antiReach", false);
 		config.addDefault("antiCombatLeave", 5000);
 		config.addDefault("blocksMovePerSecond", 5);
@@ -42,7 +42,7 @@ public class JLA extends JavaPlugin {
 		saveConfig();
 		if(config.getBoolean("antiFlight")) {aflight = true;getLogger().info("AntiFlight");}
 		if(config.getBoolean("antiKnockback")) {akb = true;getLogger().info("AntiKB");}
-		if(config.getBoolean("antiAura")) {aka = true;getLogger().info("AntiAura");}
+		if(config.getBoolean("antiAura")) {aka = config.getInt("antiAura");getLogger().info("AntiAura");}
 		if(config.getBoolean("antiReach")) {ar = true;getLogger().info("AntiReach");}
 		if(config.getBoolean("antiTP")) {atp = true;}
 		if(config.getInt("antiItemSpam") > 0) {ais = config.getInt("antiItemSpam");}
