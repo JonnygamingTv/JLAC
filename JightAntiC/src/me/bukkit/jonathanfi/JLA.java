@@ -79,7 +79,7 @@ public class JLA extends JavaPlugin {
 	}
 	public void action(String d, Player p) {
 		//if(config.getString("action") == "log") {System.out.println(d);}else if(config.getString("action") == "kick") {p.kickPlayer(config.getString("DetectMessage"));}
-		if(actionList.get("-action") != null) {String warn = "0";if(actionList.get(p.getName())!=null) {warn = actionList.get(p.getName()).get(0);int warns = Integer.parseInt(warn);if(warns>=actionList.get("-action").size())warns=warns-1;switch(actionList.get("-action").get(warns)) {
+		if(actionList.get("-action") != null) {String warn = "0";if(actionList.get(p.getName())!=null) {warn = actionList.get(p.getName()).get(0);}int warns = Integer.parseInt(warn);if(warns>=actionList.get("-action").size())warns=warns-1;actionList.get(p.getName()).set(0,String.valueOf(warns));switch(actionList.get("-action").get(warns)) {
 		case "log":
 			System.out.println(d);
 			break;
@@ -93,6 +93,6 @@ public class JLA extends JavaPlugin {
 			p.performCommand(config.getString("bancmd").replace("%player%", p.getName()));
 			break;
 			default:p.performCommand(actionList.get("-action").get(warns).replace("%player%", p.getName()));
-		}}}
+		}}
 	}
 }
