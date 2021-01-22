@@ -14,6 +14,7 @@ public class JLA extends JavaPlugin {
 	public static boolean atp = false;
 	public static float ais = 0;
 	public static float acl = 0;
+	public static int bmps = 5;
 	public static boolean log = false;
 	public void onEnable() {
 		getLogger().info("JLAC loaded!");
@@ -39,6 +40,7 @@ public class JLA extends JavaPlugin {
 		if(config.getBoolean("antiTP")) {atp = true;}
 		if(config.getInt("antiItemSpam") != 0) {ais = config.getInt("antiItemSpam");getLogger().info("AntiItemSpam="+ais);}
 		if(config.getInt("antiCombatLeave") != 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
+		if(config.getInt("blocksMovePerSecond")>0) {bmps=config.getInt("blocksMovePerSecond");}
 		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
 			//String actions = config.getString("action");
 			//for(int i=0; i<actions.length();i++) {if(actions.(i, i+1) == ",") {}}
