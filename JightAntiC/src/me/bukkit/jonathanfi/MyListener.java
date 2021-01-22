@@ -67,6 +67,10 @@ public class MyListener extends Thread implements Listener {
 	public static Map<String, List<Long>> PCD = new HashMap<String, List<Long>>();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPlayerDmg(EntityDamageByEntityEvent event) {
+		if(event.getEntity().getType() == EntityType.PLAYER) {if(event.getEntity().isDead()){final String player = event.getEntity().getName();
+		if(PlayerData.get(player) != null) {
+			PlayerData.remove(player);
+		}}}
 		if(event.getDamager().getType() == EntityType.PLAYER) {
 			if(JLA.ar) {
 				if(event.getDamager().getLocation().distance(event.getEntity().getLocation())>6){
