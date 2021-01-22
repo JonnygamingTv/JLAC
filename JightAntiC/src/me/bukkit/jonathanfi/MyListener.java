@@ -108,7 +108,7 @@ public class MyListener extends Thread implements Listener {
 			}
 			if(JLA.aka>0) {//thanks https://bukkit.org/threads/get-if-player-is-looking-at-an-entity.106661/!
 				Player player = (Player) event.getDamager();
-				if(JLA.aka==1 && !player.hasPermission("jla.cert")) {if(player.getEyeLocation() != event.getEntity().getLocation()) {event.setCancelled(true);}}
+				if(JLA.aka==1 && !player.hasPermission("jla.cert")) {if(player.getEyeLocation() != event.getEntity().getLocation()) {event.setCancelled(true);JLA.action("\nPlease stop!",player);}}
 			}
 			//if(event.getDamager().getLocation() > event.getEntity().getLocation()) {}
 			if(event.getEntity().getType() == EntityType.PLAYER && JLA.acl != 0) {
