@@ -35,8 +35,9 @@ public class JLA extends JavaPlugin {
 		config.addDefault("antiItemSpam", 200);
 		config.addDefault("#", "0 = ignore, -1 = don't let anyone drop items");
 		config.addDefault("#Actions", "log, warn, kick, ban (or leave empty for just preventing, you can also type just like here to make a scheme for each time cheats are detected)");
-		config.addDefault("action", "log");
+		config.addDefault("action", "log, warn");
 		config.addDefault("DetectMessage", "§c§lCheats detected!");
+		config.addDefault("bancmd", "ban %player% §fPlease turn off your hacks!");
 		config.addDefault("async", false);
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -77,6 +78,21 @@ public class JLA extends JavaPlugin {
 		return false;
 	}
 	public void action(String d, Player p) {
-		if(config.getString("action") == "log") {System.out.println(d);}else if(config.getString("action") == "warn") {}else if(config.getString("action") == "kick") {p.kickPlayer(config.getString("DetectMessage"));}
+		//if(config.getString("action") == "log") {System.out.println(d);}else if(config.getString("action") == "kick") {p.kickPlayer(config.getString("DetectMessage"));}
+		if(actionList.get("-action") != null) {String warn = "0";if(actionList.get(p.getName())!=null) {warn = actionList.get(p.getName()).get(0);int warns = Integer.parseInt(warn);if(warns>=actionList.get("-action").size())warns=warns-1;switch(actionList.get("-action").get(warns)) {
+		case "log":
+			System.out.println(d);
+			break;
+		case "warn":
+			p.sendMessage(config.getString("DetectMessage")+"\nPlease stop!");
+			break;
+		case "kick":
+			p.kickPlayer(config.getString("DetectMessage"));
+			break;
+		case "ban":
+			p.performCommand(config.getString("bancmd").replace("%player%", p.getName()));
+			break;
+			default:p.performCommand(actionList.get("-action").get(warns).replace("%player%", p.getName()));
+		}}}
 	}
 }
