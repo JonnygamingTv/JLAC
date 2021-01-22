@@ -2,6 +2,7 @@ package me.bukkit.jonathanfi;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class JLA extends JavaPlugin {
@@ -22,10 +23,12 @@ public class JLA extends JavaPlugin {
 		config.addDefault("antiAura", false);
 		config.addDefault("antiReach", false);
 		config.addDefault("antiCombatLeave", 5000);
+		config.addDefault("blocksMovePerSecond", 5);
 		config.addDefault("#Time", "Milliseconds (1 MS = 0.001 S)");
 		config.addDefault("antiItemSpam", 100);
-		config.addDefault("#Actions", "ban, kick, warn, log, advanced (or leave empty for just preventing)");
+		config.addDefault("#Actions", "log, warn, kick, ban (or leave empty for just preventing, you can also type just like here to make a scheme for each time cheats are detected)");
 		config.addDefault("action", "log");
+		config.addDefault("DetectMessage", "§c§lCheats detected!");
 		config.addDefault("async", false);
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -36,11 +39,14 @@ public class JLA extends JavaPlugin {
 		if(config.getBoolean("antiTP")) {atp = true;}
 		if(config.getInt("antiItemSpam") != 0) {ais = config.getInt("antiItemSpam");getLogger().info("AntiItemSpam="+ais);}
 		if(config.getInt("antiCombatLeave") != 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
-		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}
+		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
+			//String actions = config.getString("action");
+			//for(int i=0; i<actions.length();i++) {if(actions.(i, i+1) == ",") {}}
+		}
 		getLogger().info(config.getString("action"));
 		if(atp)getLogger().info("AntiTP");
 		if(config.getBoolean("async")) {
-			
+			getLogger().info("ASync is not available yet.");
 		}else {
 			getLogger().info("Running Sync.");
 			getServer().getPluginManager().registerEvents(new MyListener(), this);
@@ -58,5 +64,8 @@ public class JLA extends JavaPlugin {
 			return true;
 		}
 		return false;
+	}
+	public void action(String d, Player p) {
+		if(config.getString("action") == "log") {System.out.println(d);}else if(config.getString("action") == "warn") {}else if(config.getString("action") == "kick") {p.kickPlayer(config.getString("DetectMessage"));}
 	}
 }
