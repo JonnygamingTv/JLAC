@@ -56,10 +56,10 @@ public class MyListener extends Thread implements Listener {
 				Calendar c1 = Calendar.getInstance();
 				Date Dnow = c1.getTime(); 
 				if(PlayerDPS.get(player) != null) {
-					Long d = (long) PlayerDPS.get(player).get(0);
-					d = d + (long) loc.distance(Lloc);
-					Long Ts = (long) PlayerDPS.get(player).get(1);
-					if(Dnow.getTime() - Ts > 1000) {Ts = Dnow.getTime();d=(long) 0;}
+					Float d = (float) PlayerDPS.get(player).get(0);
+					d = d + (float) loc.distance(Lloc);
+					Float Ts = (float) PlayerDPS.get(player).get(1);
+					if(Dnow.getTime() - Ts > 1000) {Ts = (float)Dnow.getTime();d=(float) 0;}
 					float dps = d/Ts;
 					if(dps > JLA.bmps) {
 						event.setCancelled(true);
@@ -69,8 +69,8 @@ public class MyListener extends Thread implements Listener {
 					PlayerDPS.get(player).set(1, Ts);
 				}else{
 					List<Object>tmp = new ArrayList<Object>();
-					tmp.add(loc.distance(Lloc));
-					tmp.add(Dnow.getTime());
+					tmp.add((float)loc.distance(Lloc));
+					tmp.add((float)Dnow.getTime());
 					PlayerDPS.put(player, tmp);
 				}
 			}
