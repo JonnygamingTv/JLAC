@@ -1,5 +1,6 @@
 package me.bukkit.jonathanfi;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +24,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class MyListener extends Thread implements Listener {
 	public static Map<String, Location> PlayerData = new HashMap<String, Location>();//List<Location>
-	public static Map<String, List<Long>> PlayerDPS = new HashMap<String, List<Long>>();
+	public static Map<String, List<Object>> PlayerDPS = new HashMap<String, List<Object>>();
+	public static Object PObj = new Object();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		final String player = event.getPlayer().getName();
@@ -51,17 +53,22 @@ public class MyListener extends Thread implements Listener {
 				Calendar c1 = Calendar.getInstance();
 				Date Dnow = c1.getTime(); 
 				if(PlayerDPS.get(player) != null) {
-					Long d = PlayerDPS.get(player).get(0);
+					Long d = (long) PlayerDPS.get(player).get(0);
 					d = d + (long) loc.distance(Lloc);
-					Long Ts = PlayerDPS.get(player).get(1);
+					Long Ts = (long) PlayerDPS.get(player).get(1);
 					if(Dnow.getTime() - Ts > 1000) {Ts = Dnow.getTime();d=(long) 0;}
 					float dps = d/Ts;
 					if(dps > JLA.bmps) {
 						event.setCancelled(true);
 						if(JLA.log)System.out.println("AntiDPS for: "+player);
 					}
+					PlayerDPS.get(player).set(0, d);
+					PlayerDPS.get(player).set(1, Ts);
 				}else{
-					PlayerDPS.get(player);
+					List<Object>tmp = new ArrayList<Object>();
+					tmp.add(loc.distance(Lloc));
+					tmp.add(Dnow.getTime());
+					PlayerDPS.put(player, tmp);
 				}
 			}
 			}
