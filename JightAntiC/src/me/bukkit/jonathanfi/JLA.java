@@ -26,7 +26,8 @@ public class JLA extends JavaPlugin {
 		config.addDefault("antiCombatLeave", 5000);
 		config.addDefault("blocksMovePerSecond", 5);
 		config.addDefault("#Time", "Milliseconds (1 MS = 0.001 S)");
-		config.addDefault("antiItemSpam", 100);
+		config.addDefault("antiItemSpam", 200);
+		config.addDefault("#", "0 = ignore, -1 = don't let anyone drop items");
 		config.addDefault("#Actions", "log, warn, kick, ban (or leave empty for just preventing, you can also type just like here to make a scheme for each time cheats are detected)");
 		config.addDefault("action", "log");
 		config.addDefault("DetectMessage", "§c§lCheats detected!");
