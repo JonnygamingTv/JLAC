@@ -23,20 +23,21 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class MyListener extends Thread implements Listener {
 	public static Map<String, Location> PlayerData = new HashMap<String, Location>();//List<Location>
+	public static Map<String, List<Long>> PlayerDPS = new HashMap<String, List<Long>>();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		final String player = event.getPlayer().getName();
 		Location loc = event.getPlayer().getLocation();
 		if(PlayerData.get(player) != null) {
-			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);if(JLA.log)System.out.println(loc.distance(Lloc));
+			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);if(JLA.log)System.out.println(loc.distance(Lloc));Boolean cancel = true;
 			if(JLA.aflight) {
 				 if(loc.distance(Lloc)>0.1) {
-					if(loc.getBlockY()>Lloc.getBlockY()) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
-						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");}else{Boolean cancel = true;for(int i=0; i < 2; i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}}if(cancel) {event.setCancelled(cancel);if(JLA.log)System.out.println(player+" AntiFlight2");}}
+					if(loc.getBlockY()>Lloc.getBlockY()+0.3) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
+						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");}else{cancel = false;int airs = 0;for(int i=0; i < 2; i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}else{airs = airs + 1;}}if(airs > 2) {cancel=true;}if(cancel) {event.setCancelled(cancel);if(JLA.log)System.out.println(player+" AntiFlight2");}}
 					 }
 				 }
 			}
-			if(JLA.atp) {boolean cancel = false;
+			if(JLA.atp) {cancel = false;
 				if(loc.distance(Lloc)>2) {cancel = true;
 					if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(loc.getBlockX(),Lloc.getBlockY(),Lloc.getBlockZ()).getType() == Material.AIR) {cancel = false;}
 					if(loc.getBlockY() < Lloc.getBlockY()-1)for(int i=0;i < Lloc.getBlockY()-loc.getBlockY(); i++) {if(Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-i,Lloc.getBlockZ()).getType() != Material.AIR) {cancel = true;}}
@@ -45,6 +46,23 @@ public class MyListener extends Thread implements Listener {
 					if(event.getPlayer().hasPotionEffect(PotionEffectType.JUMP)) {cancel=false;}
 				}
 				if(cancel) {loc = Lloc;event.setCancelled(cancel);if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}if(JLA.log)System.out.println("AntiTP for: "+player);}
+			}
+			if(cancel != true) {
+				Calendar c1 = Calendar.getInstance();
+				Date Dnow = c1.getTime(); 
+				if(PlayerDPS.get(player) != null) {
+					Long d = PlayerDPS.get(player).get(0);
+					d = d + (long) loc.distance(Lloc);
+					Long Ts = PlayerDPS.get(player).get(1);
+					if(Dnow.getTime() - Ts > 1000) {Ts = Dnow.getTime();d=(long) 0;}
+					float dps = d/Ts;
+					if(dps > 5) {
+						event.setCancelled(true);
+						if(JLA.log)System.out.println("AntiDPS for: "+player);
+					}
+				}else{
+					PlayerDPS.get(player);
+				}
 			}
 			}
 		}
