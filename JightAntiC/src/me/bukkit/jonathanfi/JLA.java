@@ -20,6 +20,8 @@ public class JLA extends JavaPlugin {
 	public static int ais = 0;
 	public static int acl = 0;
 	public static float bmps = 5;
+	private static String dtcMsg = "";
+	private static String bancmd = "";
 	public static boolean log = false;
 	private static Map<String, List<String>> actionList = new HashMap<String, List<String>>();
 	public void onEnable() {
@@ -41,6 +43,8 @@ public class JLA extends JavaPlugin {
 		config.addDefault("async", false);
 		config.options().copyDefaults(true);
 		saveConfig();
+		if(config.getString("DetectMessage")!="")dtcMsg=config.getString("DetectMessage");
+		if(config.getString("bancmd")!="")bancmd=config.getString("bancmd");
 		if(config.getBoolean("antiFlight")) {aflight = true;getLogger().info("AntiFlight");}
 		if(config.getBoolean("antiKnockback")) {akb = true;getLogger().info("AntiKB");}
 		if(config.getBoolean("antiAura")) {aka = config.getInt("antiAura");getLogger().info("AntiAura");}
@@ -77,20 +81,20 @@ public class JLA extends JavaPlugin {
 		}
 		return false;
 	}
-	public void action(String d, Player p) {
+	public static void action(String d, Player p) {
 		//if(config.getString("action") == "log") {System.out.println(d);}else if(config.getString("action") == "kick") {p.kickPlayer(config.getString("DetectMessage"));}
 		if(actionList.get("-action") != null) {String warn = "0";if(actionList.get(p.getName())!=null) {warn = actionList.get(p.getName()).get(0);}int warns = Integer.parseInt(warn);if(warns>=actionList.get("-action").size())warns=warns-1;actionList.get(p.getName()).set(0,String.valueOf(warns));switch(actionList.get("-action").get(warns)) {
 		case "log":
 			System.out.println(d);
 			break;
 		case "warn":
-			p.sendMessage(config.getString("DetectMessage")+"\nPlease stop!");
+			p.sendMessage(dtcMsg+d);
 			break;
 		case "kick":
-			p.kickPlayer(config.getString("DetectMessage"));
+			p.kickPlayer(dtcMsg);
 			break;
 		case "ban":
-			p.performCommand(config.getString("bancmd").replace("%player%", p.getName()));
+			p.performCommand(bancmd.replace("%player%", p.getName()));
 			break;
 			default:p.performCommand(actionList.get("-action").get(warns).replace("%player%", p.getName()));
 		}}
