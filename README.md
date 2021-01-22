@@ -1,2 +1,2 @@
 # JLAC
-Lightweight anticheat for Minecraft
+Lightweight anticheat spigot plugin for Minecraft
