@@ -123,7 +123,8 @@ public class MyListener extends Thread implements Listener {
 	public static Map<String, Long> PDD = new HashMap<String, Long>();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPDrop(PlayerDropItemEvent event) {
-		if(JLA.ais != 0) {
+		if(JLA.ais!=-1) {
+			if(JLA.ais != 0) {
 			final String player = event.getPlayer().getName();
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime(); 
@@ -132,6 +133,7 @@ public class MyListener extends Thread implements Listener {
 			}
 			PDD.put(player,Dnow.getTime());
 		}
+		}else{event.setCancelled(true);}
 	}
 	@EventHandler (priority = EventPriority.LOW)
 	public void onPConsume(PlayerItemConsumeEvent event) {
