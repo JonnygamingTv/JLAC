@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class MyListener extends Thread implements Listener {
 	public static Map<String, Location> PlayerData = new HashMap<String, Location>();//List<Location>
@@ -30,7 +31,7 @@ public class MyListener extends Thread implements Listener {
 			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);System.out.println(loc.distance(Lloc));
 			boolean cancel = false;
 			if(JLA.aflight) {
-				 if(loc.distance(Lloc)>0.8) {
+				 if(loc.distance(Lloc)>0.3) {
 					if(loc.getBlockY()>Lloc.getBlockY()) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
 						 if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);}
 					 }
@@ -44,7 +45,7 @@ public class MyListener extends Thread implements Listener {
 					//event.getPlayer().teleport(loca);
 					if(event.getPlayer().hasPotionEffect(PotionEffectType.JUMP)) {cancel=false;}
 				}
-				if(cancel) {loc = Lloc;event.setCancelled(cancel);if(loc.distance(Lloc)>5)event.getPlayer().teleport(Lloc);if(JLA.log)System.out.println("AntiTP for: "+player);}
+				if(cancel) {loc = Lloc;event.setCancelled(cancel);if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}if(JLA.log)System.out.println("AntiTP for: "+player);}
 			}
 			}
 		}
@@ -53,6 +54,12 @@ public class MyListener extends Thread implements Listener {
 	}
 	public void onTeleport(PlayerTeleportEvent e) {
 		final String player = e.getPlayer().getName();
+		if(PlayerData.get(player) != null) {
+			PlayerData.remove(player);
+		}
+	}
+	public void onDeath(PlayerDeathEvent e) {
+		final String player = e.getEntity().getName();
 		if(PlayerData.get(player) != null) {
 			PlayerData.remove(player);
 		}
