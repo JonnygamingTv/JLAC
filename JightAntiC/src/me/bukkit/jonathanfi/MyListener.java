@@ -32,7 +32,7 @@ public class MyListener extends Thread implements Listener {
 			if(JLA.aflight) {
 				 if(loc.distance(Lloc)>0.1) {
 					if(loc.getBlockY()>Lloc.getBlockY()) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
-						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");}else{Boolean cancel = true;for(int i=0; i < Lloc.getBlockY()-loc.getBlockY(); i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}}event.setCancelled(cancel);}
+						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");}else{Boolean cancel = true;for(int i=0; i < 2; i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}}if(cancel) {event.setCancelled(cancel);if(JLA.log)System.out.println(player+" AntiFlight2");}}
 					 }
 				 }
 			}
