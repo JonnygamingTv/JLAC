@@ -78,8 +78,8 @@ public class JLA extends JavaPlugin {
             String label,
             String[] args) {
 		if (command.getName().equalsIgnoreCase("jla")) {
-			if(args.length>0 && args != null)if(args[0] != null)if(args[0] == "itemspam"){if(args[1] != null) {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0] == "CombatLeave"){if(args[1] != null) {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));}}
-			sender.sendMessage("§a§lJLA\nby §4jonathanfi\n \n§b/jla itemspam <cooldown ms>§c\n/jla CombatLeave <cooldown ms>\n \n§d1 ms = 0.001 seconds");
+			if(args.length>0 && args != null)if(args[0] != null)if(args[0] == "itemspam"){if(args[1] != null) {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0] == "CombatLeave"){if(args[1] != null) {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));}}else if(args[0] == "liq") {if(args[1] != null) {aliq=Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(aliq));}}
+			sender.sendMessage("§a§lJLA\nby §4jonathanfi\n \n§b/jla itemspam <cooldown ms>§c\n/jla CombatLeave <cooldown ms>\n§6/jla liq <blocks>\n§f \n§d1 ms = 0.001 seconds");
 			return true;
 		}
 		return false;
