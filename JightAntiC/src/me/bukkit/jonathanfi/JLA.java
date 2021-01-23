@@ -32,7 +32,7 @@ public class JLA extends JavaPlugin {
 		config.addDefault("antiLiquid", 0.1);
 		config.addDefault("antiKnockback", false);
 		config.addDefault("antiAura", 1);
-		config.addDefault("antiReach", false);
+		config.addDefault("antiReach", 6);
 		config.addDefault("antiCombatLeave", 5000);
 		config.addDefault("blocksMovePerSecond", 5);
 		config.addDefault("#Time", "Milliseconds (1 MS = 0.001 S)");
