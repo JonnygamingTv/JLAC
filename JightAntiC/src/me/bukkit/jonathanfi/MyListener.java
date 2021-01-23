@@ -48,13 +48,14 @@ public class MyListener extends Thread implements Listener {
 					}
 					PlastB.get(player).set(0, (long) 1);
 					PlastB.get(player).set(1, Dnow.getTime());
-					}else{}//Lloc.getBlockY()-loc.getBlockY()
+					}//else if(loc.getBlockY()==Lloc.getBlockY() && loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.AIR){event.setCancelled(true);JLA.action("Flight detected?", event.getPlayer());}//Lloc.getBlockY()-loc.getBlockY()
 				if(PlastB.get(player)!=null && PlastB.get(player).get(0)!=null) {
 					PlastB.get(player).set(2,(PlastB.get(player).get(2)!=null?PlastB.get(player).get(2):0)+Lloc.getBlockY()-loc.getBlockY());
 					if(PlastB.get(player).get(2)!=null && Math.round(PlastB.get(player).get(2))<=0){
 						PlastB.get(player).set(0, null);
 					}else{
 						mayCheat=PlastB.get(player).get(2);
+						if((long)Dnow.getTime()-PlastB.get(player).get(1)>300) {mayCheat=mayCheat+1;}
 					}}else if(PlastB.containsKey(player)){PlastB.remove(player);}
 				 if(loc.distance(Lloc)>0.1) {
 					if(loc.getBlockY()>Lloc.getBlockY()+0.3) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
