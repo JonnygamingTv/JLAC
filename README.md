@@ -1,7 +1,7 @@
 # JLAC
 Lightweight anticheat spigot plugin for Minecraft
 
-### You can get it on [Spigot](https://www.spigotmc.org/resources/jightantic.88154/) here!
+### You can get it on [Spigot here](https://www.spigotmc.org/resources/jightantic.88154/)!
 
 ## Help
 /jla - jla.checkcommand
