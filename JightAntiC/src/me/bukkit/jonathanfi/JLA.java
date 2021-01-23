@@ -15,7 +15,7 @@ public class JLA extends JavaPlugin {
 	public static boolean aflight = false;
 	public static boolean akb = false;
 	public static int aka = 0;
-	public static boolean ar = false;
+	public static float ar = 0;
 	public static boolean atp = false;
 	public static float aliq = 0; 
 	public static int ais = 0;
@@ -50,7 +50,7 @@ public class JLA extends JavaPlugin {
 		if(config.getBoolean("antiFlight")) {aflight = true;getLogger().info("AntiFlight");}
 		if(config.getBoolean("antiKnockback")) {akb = true;getLogger().info("AntiKB");}
 		if(config.getBoolean("antiAura")) {aka = config.getInt("antiAura");getLogger().info("AntiAura");}
-		if(config.getBoolean("antiReach")) {ar = true;getLogger().info("AntiReach");}
+		if(config.getBoolean("antiReach")) {ar = config.getInt("antiReach");getLogger().info("AntiReach");}
 		if(config.getBoolean("antiTP")) {atp = true;}
 		if(config.getInt("antiItemSpam") > 0) {ais = config.getInt("antiItemSpam");}
 		getLogger().info("AntiItemSpam="+ais);
