@@ -25,6 +25,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class MyListener extends Thread implements Listener {
 	private static Map<String, Location> PlayerData = new HashMap<String, Location>();//List<Location>
+	private static Map<String, List<Long>> PlastB = new HashMap<String, List<Long>>();
 	private static Map<String, List<Object>> PlayerDPS = new HashMap<String, List<Object>>();
 	//public static Object PObj = new Object();
 	@EventHandler (priority = EventPriority.LOWEST)
@@ -33,11 +34,39 @@ public class MyListener extends Thread implements Listener {
 		Location loc = event.getPlayer().getLocation();
 		if(!event.getPlayer().hasPermission("jla.cert")) {
 		if(PlayerData.get(player) != null) {
-			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);if(JLA.log)System.out.println(loc.distance(Lloc));Boolean cancel = true;
-			if(JLA.aflight) {
+			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);Boolean cancel = true;
+			Calendar c1 = Calendar.getInstance();
+			Date Dnow = c1.getTime(); 
+			if(JLA.aflight) {Long mayCheat=(long)0;
+				if(loc.getBlockY()>Lloc.getBlockY()) {
+					if(!PlastB.containsKey(player)) {
+						List<Long>tmp = new ArrayList<Long>();
+						tmp.add((long)1);
+						tmp.add((long)Dnow.getTime());
+						tmp.add((long)0);
+						PlastB.put(player, tmp);
+					}
+					PlastB.get(player).set(0, (long) 1);
+					PlastB.get(player).set(1, Dnow.getTime());
+					}else{}//Lloc.getBlockY()-loc.getBlockY()
+				if(PlastB.get(player)!=null && PlastB.get(player).get(0)!=null) {
+					PlastB.get(player).set(2,(PlastB.get(player).get(2)!=null?PlastB.get(player).get(2):0)+Lloc.getBlockY()-loc.getBlockY());
+					if(PlastB.get(player).get(2)!=null && Math.round(PlastB.get(player).get(2))<=0){
+						PlastB.get(player).set(0, null);
+					}else{
+						mayCheat=PlastB.get(player).get(2);
+					}}else if(PlastB.containsKey(player)){PlastB.remove(player);}
 				 if(loc.distance(Lloc)>0.1) {
 					if(loc.getBlockY()>Lloc.getBlockY()+0.3) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
-						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");}else{cancel = false;int airs = 0;for(int i=0; i < 2; i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}else{airs = airs + 1;}}if(airs>3) {JLA.action("\nPlease stop!",event.getPlayer());}else if(airs > 2) {cancel=true;}if(cancel) {event.setCancelled(cancel);if(JLA.log)System.out.println(player+" AntiFlight2");}}
+						boolean blockNear = false;int offset=2;
+						try {
+						org.bukkit.potion.PotionEffect speed = event.getPlayer().getPotionEffect(PotionEffectType.SPEED);
+						if(speed!=null)if(speed.getAmplifier()>0)offset+=Math.round(speed.getAmplifier()/1000);
+						}catch(NoSuchMethodError e) {}
+						for(int i=-offset;i<offset;i++) {
+							if(Lloc.getWorld().getBlockAt(Lloc.getBlockX()-i,Lloc.getBlockY()-1,loc.getBlockZ()-i).getType() != Material.AIR) {blockNear = true;}
+						}
+						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR && !blockNear) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");}else{cancel = false;int airs = 0;for(int i=0; i < 2; i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}else{airs = airs + 1;}}if(airs>3) {JLA.action("\nPlease stop!",event.getPlayer());}else if(airs > 2) {cancel=true;}if(cancel&&mayCheat>1) {event.setCancelled(cancel);if(JLA.log)System.out.println(player+" AntiFlight2");}}
 					}
 					try {if(event.getPlayer().getPassengers() != null) {if(JLA.log)System.out.println(event.getPlayer().getPassengers());}}catch(NoSuchMethodError e) {}
 				 }
@@ -51,8 +80,6 @@ public class MyListener extends Thread implements Listener {
 				}
 				if(cancel) {loc = Lloc;event.setCancelled(cancel);if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}JLA.action("\n§6Please stop!", event.getPlayer());if(JLA.log)System.out.println("AntiTP for: "+player);}
 			}
-			Calendar c1 = Calendar.getInstance();
-			Date Dnow = c1.getTime(); 
 			if(JLA.aliq>0) {
 				if(PlayerDPS.get(player).get(3) == null) {PlayerDPS.get(player).set(3, (float)Dnow.getTime());}
 				if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.WATER) {PlayerDPS.get(player).set(3, (float)Dnow.getTime());}if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>2000) {event.getPlayer().teleport(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY()-JLA.aliq, loc.getBlockZ()));}
@@ -101,7 +128,7 @@ public class MyListener extends Thread implements Listener {
 		if(event.getEntity().getType() == EntityType.PLAYER) {if(event.getEntity().isDead()){final String player = event.getEntity().getName();
 		if(PlayerData.get(player) != null) {
 			PlayerData.remove(player);
-		}}}
+		}PCD.remove(player);}}
 		if(event.getDamager().getType() == EntityType.PLAYER) {
 			if(!event.getDamager().hasPermission("jla.cert")) {
 			if(JLA.ar>0) {
@@ -135,6 +162,7 @@ public class MyListener extends Thread implements Listener {
 		if(PlayerDPS.get(player) != null) {
 			PlayerDPS.remove(player);
 		}
+		if(PlastB.containsKey(player))PlastB.remove(player);
 		if(PCD.get(player) != null && JLA.acl != 0) {
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime();
