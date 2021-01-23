@@ -51,9 +51,13 @@ public class MyListener extends Thread implements Listener {
 				}
 				if(cancel) {loc = Lloc;event.setCancelled(cancel);if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}JLA.action("\n§6Please stop!", event.getPlayer());if(JLA.log)System.out.println("AntiTP for: "+player);}
 			}
+			Calendar c1 = Calendar.getInstance();
+			Date Dnow = c1.getTime(); 
+			if(JLA.aliq>0) {
+				if(PlayerDPS.get(player).get(3) == null) {PlayerDPS.get(player).set(3, (float)Dnow.getTime());}
+				if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.WATER) {PlayerDPS.get(player).set(3, (float)Dnow.getTime());}if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>2000) {event.getPlayer().teleport(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY()-JLA.aliq, loc.getBlockZ()));}
+			}
 			if(cancel != true && JLA.bmps>0) {
-				Calendar c1 = Calendar.getInstance();
-				Date Dnow = c1.getTime(); 
 				if(PlayerDPS.get(player) != null) {
 					Float d = (float) PlayerDPS.get(player).get(0);
 					d = d + (float) loc.distance(Lloc);
@@ -99,6 +103,7 @@ public class MyListener extends Thread implements Listener {
 			PlayerData.remove(player);
 		}}}
 		if(event.getDamager().getType() == EntityType.PLAYER) {
+			if(!event.getDamager().hasPermission("jla.cert")) {
 			if(JLA.ar) {
 				if(event.getDamager().getLocation().distance(event.getEntity().getLocation())>6){
 					event.setCancelled(true);
@@ -107,7 +112,9 @@ public class MyListener extends Thread implements Listener {
 			}
 			if(JLA.aka>0) {//thanks https://bukkit.org/threads/get-if-player-is-looking-at-an-entity.106661/!
 				Player player = (Player) event.getDamager();
-				if(JLA.aka==1 && !player.hasPermission("jla.cert")) {if(player.getEyeLocation() != event.getEntity().getLocation()) {event.setCancelled(true);JLA.action("\nPlease stop!",player);}}
+				if(JLA.aka==1) {if(player.getEyeLocation() != event.getEntity().getLocation()) {event.setCancelled(true);JLA.action("\nPlease stop!",player);}}else if(JLA.aka==2) {
+					
+				}
 			}
 			//if(event.getDamager().getLocation() > event.getEntity().getLocation()) {}
 			if(event.getEntity().getType() == EntityType.PLAYER && JLA.acl != 0) {
@@ -116,6 +123,7 @@ public class MyListener extends Thread implements Listener {
 				Date Dnow = c1.getTime();
 				if(PCD.get(player) == null){PCD.get(player).add(Dnow.getTime());}
 				PCD.get(player).set(0, Dnow.getTime());
+			}
 			}
 		}
 	}
@@ -140,7 +148,7 @@ public class MyListener extends Thread implements Listener {
 	public static Map<String, Long> PDD = new HashMap<String, Long>();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPDrop(PlayerDropItemEvent event) {
-		if(JLA.ais!=-1) {
+		if(JLA.ais!=-1 && !event.getPlayer().hasPermission("jla.cert")) {
 			if(JLA.ais != 0) {
 			final String player = event.getPlayer().getName();
 			Calendar c1 = Calendar.getInstance();
