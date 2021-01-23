@@ -54,7 +54,7 @@ public class JLA extends JavaPlugin {
 		if(config.getBoolean("antiTP")) {atp = true;}
 		if(config.getInt("antiItemSpam") > 0) {ais = config.getInt("antiItemSpam");}
 		getLogger().info("AntiItemSpam="+ais);
-		if(config.getInt("antiLiquid")>0) {aliq=config.getInt("antiLiquid");}
+		if(config.getInt("antiLiquid")>0) {aliq=(float)Float.parseFloat(config.getString("antiLiquid"));}
 		if(config.getInt("antiCombatLeave") > 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
 		if(config.getInt("blocksMovePerSecond")>0) {bmps=config.getInt("blocksMovePerSecond");}
 		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
