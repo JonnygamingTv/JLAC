@@ -17,6 +17,7 @@ public class JLA extends JavaPlugin {
 	public static int aka = 0;
 	public static boolean ar = false;
 	public static boolean atp = false;
+	public static float aliq = 0; 
 	public static int ais = 0;
 	public static int acl = 0;
 	public static float bmps = 5;
@@ -28,6 +29,7 @@ public class JLA extends JavaPlugin {
 		getLogger().info("JLAC loaded!");
 		config.addDefault("antiFlight", false);
 		config.addDefault("antiTP", false);
+		config.addDefault("antiLiquid", 0.1);
 		config.addDefault("antiKnockback", false);
 		config.addDefault("antiAura", 1);
 		config.addDefault("antiReach", false);
@@ -52,6 +54,7 @@ public class JLA extends JavaPlugin {
 		if(config.getBoolean("antiTP")) {atp = true;}
 		if(config.getInt("antiItemSpam") > 0) {ais = config.getInt("antiItemSpam");}
 		getLogger().info("AntiItemSpam="+ais);
+		if(config.getInt("antiLiquid")>0) {aliq=config.getInt("antiLiquid");}
 		if(config.getInt("antiCombatLeave") > 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
 		if(config.getInt("blocksMovePerSecond")>0) {bmps=config.getInt("blocksMovePerSecond");}
 		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
