@@ -54,8 +54,7 @@ public class JLA extends JavaPlugin {
 		if(config.getBoolean("antiReach")) {ar = config.getInt("antiReach");getLogger().info("AntiReach");}
 		if(config.getBoolean("antiTP")) {atp = true;}
 		if(config.getInt("antiItemSpam") > 0) {ais = config.getInt("antiItemSpam");}
-		getLogger().info("AntiItemSpam="+ais);
-		if(config.getInt("antiLiquid")>0) {aliq=(float)Float.parseFloat(config.getString("antiLiquid"));}
+		if(config.getString("antiLiquid")!="") {aliq=Float.parseFloat(config.getString("antiLiquid"));getLogger().info("AntiLiq="+aliq);}
 		if(config.getInt("antiCombatLeave") > 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
 		if(config.getInt("blocksMovePerSecond")>0) {bmps=config.getInt("blocksMovePerSecond");}
 		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
@@ -79,7 +78,8 @@ public class JLA extends JavaPlugin {
             String label,
             String[] args) {
 		if (command.getName().equalsIgnoreCase("jla")) {
-			if(args.length>0 && args != null)if(args[0] != null)if(args[0] == "itemspam"){if(args[1] != "") {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0] == "CombatLeave"){if(args[1] != "") {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));return true;}}else if(args[0] == "liq") {if(args[1] != null) {aliq=(float)Float.parseFloat(args[1]);}else{sender.sendMessage(String.valueOf(aliq));return true;}}
+			for(int i=0;i<args.length;i++){System.out.println(i+": "+args[i]);}
+			if(args.length>0 && args != null)if(args[0] != null)if(args[0].equalsIgnoreCase("itemspam")){if(args.length==2) {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0].equalsIgnoreCase("combatleave")){if(args.length==2) {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));return true;}}else if(args[0].equalsIgnoreCase("liq")) {if(args[1] != null) {aliq=(float)Float.parseFloat(args[1]);}else{sender.sendMessage(String.valueOf(aliq));return true;}}
 			sender.sendMessage("§a§lJLA\nby §4jonathanfi\n \n§b/jla itemspam <cooldown ms>§c\n/jla CombatLeave <cooldown ms>\n§6/jla liq <blocks>\n§f \n§d1 ms = 0.001 seconds");
 			return true;
 		}
