@@ -95,7 +95,7 @@ public class MyListener extends Thread implements Listener {
 			PlayerData.remove(player);
 		}
 	}
-	public static Map<String, List<Long>> PCD = new HashMap<String, List<Long>>();
+	public static Map<String, Long> PCD = new HashMap<String, Long>();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPlayerDmg(EntityDamageByEntityEvent event) {
 		if(event.getEntity().getType() == EntityType.PLAYER) {if(event.getEntity().isDead()){final String player = event.getEntity().getName();
@@ -121,7 +121,7 @@ public class MyListener extends Thread implements Listener {
 				final String player = event.getEntity().getName();
 				Calendar c1 = Calendar.getInstance();
 				Date Dnow = c1.getTime();
-				PCD.get(player).set(0, Dnow.getTime());
+				PCD.put(player, Dnow.getTime());
 			}
 			}
 		}
@@ -138,7 +138,7 @@ public class MyListener extends Thread implements Listener {
 		if(PCD.get(player) != null && JLA.acl != 0) {
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime();
-			if(Dnow.getTime() - PCD.get(player).get(0) < JLA.acl) {
+			if(Dnow.getTime() - PCD.get(player) < JLA.acl) {
 				event.getPlayer().setHealth(0);
 				PCD.remove(player);
 			}
