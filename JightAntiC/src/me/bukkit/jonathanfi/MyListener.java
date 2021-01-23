@@ -121,7 +121,6 @@ public class MyListener extends Thread implements Listener {
 				final String player = event.getEntity().getName();
 				Calendar c1 = Calendar.getInstance();
 				Date Dnow = c1.getTime();
-				if(PCD.get(player) == null){PCD.get(player).add(Dnow.getTime());}
 				PCD.get(player).set(0, Dnow.getTime());
 			}
 			}
