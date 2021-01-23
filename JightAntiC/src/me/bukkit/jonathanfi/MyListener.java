@@ -104,8 +104,8 @@ public class MyListener extends Thread implements Listener {
 		}}}
 		if(event.getDamager().getType() == EntityType.PLAYER) {
 			if(!event.getDamager().hasPermission("jla.cert")) {
-			if(JLA.ar) {
-				if(event.getDamager().getLocation().distance(event.getEntity().getLocation())>6){
+			if(JLA.ar>0) {
+				if(event.getDamager().getLocation().distance(event.getEntity().getLocation())>JLA.ar){
 					event.setCancelled(true);
 					if(JLA.log)System.out.println(event.getDamager().getName()+" is using Reach?");
 				}
