@@ -86,10 +86,9 @@ public class MyListener extends Thread implements Listener {
 				tmp.add((float)loc.distance(Lloc));
 				tmp.add((float)Dnow.getTime());
 				tmp.add((float)Dnow.getTime());
-				tmp.add(null);
+				tmp.add(null);//System.out.println(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType()+":"+loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType());
 				PlayerDPS.put(player, tmp);}
-				//System.out.println(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType()+":"+loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType());
-				if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.WATER) {PlayerDPS.get(player).set(3, (float)Dnow.getTime());}else if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>2000) {Location nLoc = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY()-JLA.aliq, loc.getBlockZ());try{if(event.getPlayer().getLocation().getYaw()!=0){nLoc.setYaw(event.getPlayer().getLocation().getYaw());}}catch(NoSuchMethodError e) {}event.getPlayer().teleport(nLoc);PlayerDPS.get(player).set(3, Dnow.getTime());}
+				if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.WATER || loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() != Material.WATER) {PlayerDPS.get(player).set(3, (float)Dnow.getTime());}else if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>2000) {Location nLoc = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY()-JLA.aliq, loc.getBlockZ());try{if(event.getPlayer().getLocation().getYaw()!=0){nLoc.setYaw(event.getPlayer().getLocation().getYaw());}}catch(NoSuchMethodError e) {}event.getPlayer().teleport(nLoc);PlayerDPS.get(player).set(3, Dnow.getTime());}
 			}
 			if(cancel != true && JLA.bmps>0) {
 				if(PlayerDPS.get(player) != null) {
