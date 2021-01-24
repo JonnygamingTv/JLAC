@@ -65,7 +65,7 @@ public class MyListener extends Thread implements Listener {
 						if(speed!=null)if(speed.getAmplifier()>0)offset+=Math.round(speed.getAmplifier()/1000);
 						}catch(NoSuchMethodError e) {}
 						for(int i=-offset;i<offset;i++) {
-							if(Lloc.getWorld().getBlockAt(Lloc.getBlockX()-i,Lloc.getBlockY()-1,loc.getBlockZ()-i).getType() != Material.AIR) {blockNear = true;}
+							if(Lloc.getWorld().getBlockAt(Lloc.getBlockX()-i,Lloc.getBlockY()-1,loc.getBlockZ()-i).getType() != Material.AIR || Lloc.getWorld().getBlockAt(Lloc.getBlockX()-i,Lloc.getBlockY()-2,loc.getBlockZ()-i).getType() != Material.AIR) {blockNear = true;}
 						}
 						 if(loc.getWorld().getBlockAt(loc.getBlockX(),(int)(loc.getBlockY()-loc.distance(Lloc)),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-1,Lloc.getBlockZ()).getType() == Material.AIR && !blockNear) {event.setCancelled(true);if(JLA.log)System.out.println(player+" AntiFlight1");JLA.action("Stop flycheating!", event.getPlayer());}else{cancel = false;int airs = 0;for(int i=0; i < 2; i++){if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-i,loc.getBlockZ()).getType() != Material.AIR) {cancel=false;}else{airs = airs + 1;}}if(airs>3) {JLA.action("\nPlease stop!",event.getPlayer());}else if(airs > 2) {cancel=true;}if(cancel&&mayCheat>1) {event.setCancelled(cancel);if(JLA.log)System.out.println(player+" AntiFlight2");}}
 					}
