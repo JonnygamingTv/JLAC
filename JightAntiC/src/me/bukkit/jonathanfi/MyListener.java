@@ -72,13 +72,13 @@ public class MyListener extends Thread implements Listener {
 					try {if(event.getPlayer().getPassengers() != null && event.getPlayer().getPassengers().size()>0) {if(JLA.log)System.out.println(event.getPlayer().getPassengers());}}catch(NoSuchMethodError e) {}
 				 }
 			}
-			if(JLA.atp) {cancel = false;
+			if(JLA.atp) {cancel = false;try {
 				if(loc.distance(Lloc)>2 && !(event.getPlayer().hasPotionEffect(PotionEffectType.JUMP)||event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {cancel = true;
 					if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(loc.getBlockX(),Lloc.getBlockY(),Lloc.getBlockZ()).getType() == Material.AIR) {cancel = false;}
 					if(loc.getBlockY() < Lloc.getBlockY()-1)for(int i=0;i < Lloc.getBlockY()-loc.getBlockY(); i++) {if(Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-i,Lloc.getBlockZ()).getType() != Material.AIR) {cancel = true;}}
 					//Location loca = new Location(Lloc.getWorld(), Lloc.getBlockX(), Lloc.getBlockY(), Lloc.getBlockZ());
 					//event.getPlayer().teleport(loca);
-				}
+				}}catch(NoSuchFieldError e) {}
 				if(cancel) {loc = Lloc;if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}else{event.setCancelled(cancel);}JLA.action("\n§6Please stop!", event.getPlayer());PlayerData.remove(player);if(JLA.log)System.out.println("AntiTP for: "+player);}
 			}
 			if(JLA.aliq>0) {
