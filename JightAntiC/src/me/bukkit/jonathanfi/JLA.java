@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class JLA extends JavaPlugin {
 	FileConfiguration config = getConfig();
-	public static boolean aflight = false;
+	public static int aflight = 0;
 	public static boolean akb = false;
 	public static int aka = 0;
 	public static float ar = 0;
@@ -28,7 +28,7 @@ public class JLA extends JavaPlugin {
 	private static Map<String, List<String>> actionList = new HashMap<String, List<String>>();
 	public void onEnable() {
 		getLogger().info("JLAC loaded!");
-		config.addDefault("antiFlight", false);
+		config.addDefault("antiFlight", 0);
 		config.addDefault("antiTP", false);
 		config.addDefault("antiLiquid", 0.1);
 		config.addDefault("antiKnockback", false);
@@ -48,7 +48,7 @@ public class JLA extends JavaPlugin {
 		saveConfig();
 		if(config.getString("DetectMessage")!="")dtcMsg=config.getString("DetectMessage");
 		if(config.getString("bancmd")!="")bancmd=config.getString("bancmd");
-		if(config.getBoolean("antiFlight")) {aflight = true;getLogger().info("AntiFlight");}
+		if(config.getInt("antiFlight")>0) {aflight = config.getInt("antiFlight");getLogger().info("AntiFlight="+aflight);}
 		if(config.getBoolean("antiKnockback")) {akb = true;getLogger().info("AntiKB");}
 		if(config.getBoolean("antiAura")) {aka = config.getInt("antiAura");getLogger().info("AntiAura");}
 		if(config.getBoolean("antiReach")) {ar = config.getInt("antiReach");getLogger().info("AntiReach");}
