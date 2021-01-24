@@ -37,7 +37,7 @@ public class MyListener extends Thread implements Listener {
 			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);Boolean cancel = true;
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime(); 
-			if(JLA.aflight) {Long mayCheat=(long)0;
+			if(JLA.aflight>0) {Long mayCheat=(long)0;
 				if(loc.getBlockY()>Lloc.getBlockY()) {
 					if(!PlastB.containsKey(player)) {
 						List<Long>tmp = new ArrayList<Long>();
@@ -59,7 +59,7 @@ public class MyListener extends Thread implements Listener {
 					}}else if(PlastB.containsKey(player)){PlastB.remove(player);}
 				 if(loc.distance(Lloc)>0.1) {
 					if(loc.getBlockY()>Lloc.getBlockY()+0.3) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
-						boolean blockNear = false;int offset=2;
+						boolean blockNear = false;int offset=2+JLA.aflight;
 						try {
 						org.bukkit.potion.PotionEffect speed = event.getPlayer().getPotionEffect(PotionEffectType.SPEED);
 						if(speed!=null)if(speed.getAmplifier()>0)offset+=Math.round(speed.getAmplifier()/1000);
