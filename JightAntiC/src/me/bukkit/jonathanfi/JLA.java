@@ -79,7 +79,24 @@ public class JLA extends JavaPlugin {
             String[] args) {
 		if (command.getName().equalsIgnoreCase("jla")) {
 			for(int i=0;i<args.length;i++){System.out.println(i+": "+args[i]);}
-			if(args.length>0 && args != null)if(args[0] != null)if(args[0].equalsIgnoreCase("itemspam")){if(args.length==2) {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0].equalsIgnoreCase("combatleave")){if(args.length==2) {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));return true;}}else if(args[0].equalsIgnoreCase("liq")) {if(args[1] != null) {aliq=(float)Float.parseFloat(args[1]);}else{sender.sendMessage(String.valueOf(aliq));return true;}}
+			if(args.length>0 && args != null)if(args[0] != null)if(args[0].equalsIgnoreCase("itemspam")){if(args.length==2) {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0].equalsIgnoreCase("combatleave")){if(args.length==2) {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));return true;}}else if(args[0].equalsIgnoreCase("liq")) {if(args[1] != null) {aliq=(float)Float.parseFloat(args[1]);}else{sender.sendMessage(String.valueOf(aliq));return true;}}else 
+				if(args[0].equalsIgnoreCase("reload")) {config = getConfig();
+				if(config.getString("DetectMessage")!="")dtcMsg=config.getString("DetectMessage");
+				if(config.getString("bancmd")!="")bancmd=config.getString("bancmd");
+				if(config.getInt("antiFlight")>0) {aflight = config.getInt("antiFlight");getLogger().info("AntiFlight="+aflight);}
+				if(config.getBoolean("antiKnockback")) {akb = true;getLogger().info("AntiKB");}
+				if(config.getBoolean("antiAura")) {aka = config.getInt("antiAura");getLogger().info("AntiAura");}
+				if(config.getBoolean("antiReach")) {ar = config.getInt("antiReach");getLogger().info("AntiReach");}
+				if(config.getBoolean("antiTP")) {atp = true;}
+				if(config.getInt("antiItemSpam") > 0) {ais = config.getInt("antiItemSpam");}
+				if(config.getString("antiLiquid")!="") {aliq=Float.parseFloat(config.getString("antiLiquid"));getLogger().info("AntiLiq="+aliq);}
+				if(config.getInt("antiCombatLeave") > 0) {acl = config.getInt("antiCombatLeave");getLogger().info("AntiCombatLeave="+acl);}
+				if(config.getInt("blocksMovePerSecond")>0) {bmps=config.getInt("blocksMovePerSecond");}
+				if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
+					List<String>actions = Arrays.asList(config.getString("action").split(","));
+					actionList.put("-action",actions);
+				}
+				}
 			sender.sendMessage("§a§lJLA\nby §4jonathanfi\n \n§b/jla itemspam <cooldown ms>§c\n/jla CombatLeave <cooldown ms>\n§6/jla liq <blocks>\n§f \n§d1 ms = 0.001 seconds");
 			return true;
 		}
