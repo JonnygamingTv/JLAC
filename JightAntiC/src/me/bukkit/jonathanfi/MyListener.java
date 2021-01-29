@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -122,6 +123,9 @@ public class MyListener extends Thread implements Listener {
 	}
 	public void onDeath(PlayerDeathEvent e) {
 		final String player = e.getEntity().getName();PlayerData.remove(player);PCD.remove(player);PlastB.remove(player);PlayerDPS.remove(player);
+	}
+	public void onRespawn(PlayerRespawnEvent e) {
+		final String player = e.getPlayer().getName();PlayerData.remove(player);PCD.remove(player);PlastB.remove(player);PlayerDPS.remove(player);
 	}
 	public static Map<String, Long> PCD = new HashMap<String, Long>();
 	@EventHandler (priority = EventPriority.LOWEST)
