@@ -1,5 +1,7 @@
 package me.bukkit.jonathanfi;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -28,6 +31,25 @@ public class MyListener extends Thread implements Listener {
 	private static Map<String, Location> PlayerData = new HashMap<String, Location>();//List<Location>
 	private static Map<String, List<Long>> PlastB = new HashMap<String, List<Long>>();
 	private static Map<String, List<Object>> PlayerDPS = new HashMap<String, List<Object>>();
+	private boolean pingSupported = true;
+	private int getPing(Player p) {
+		try {
+	        String v = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+	        if (!p.getClass().getName().equals("org.bukkit.craftbukkit." + v + ".entity.CraftPlayer")) { //compatibility with some plugins
+	            p = Bukkit.getPlayer(p.getUniqueId()); //cast to org.bukkit.entity.Player
+	        }
+	            Class<?> CraftPlayerClass = Class.forName("org.bukkit.craftbukkit." + v + ".entity.CraftPlayer");
+	            Object CraftPlayer = CraftPlayerClass.cast((Player) p);
+	            Method getHandle = CraftPlayer.getClass().getMethod("getHandle");
+	            Object EntityPlayer = getHandle.invoke(CraftPlayer);
+	            Field ping = EntityPlayer.getClass().getDeclaredField("ping");
+	            return ping.getInt(EntityPlayer);
+		}catch(Exception e) {
+			pingSupported = false;
+			System.out.println("[JLA] Ping not supported, disabling..");
+		}
+		return 0;
+	}
 	//public static Object PObj = new Object();
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPlayerMove(PlayerMoveEvent event) {
@@ -56,7 +78,7 @@ public class MyListener extends Thread implements Listener {
 						PlastB.get(player).set(0, null);
 					}else{
 						mayCheat=PlastB.get(player).get(2);
-						if((long)Dnow.getTime()-PlastB.get(player).get(1)>300) {mayCheat=mayCheat+1;}
+						if((long)Dnow.getTime()-PlastB.get(player).get(1)>250+(pingSupported?getPing(event.getPlayer()):50)) {mayCheat=mayCheat+1;}
 					}}else if(PlastB.containsKey(player)){PlastB.remove(player);}
 				 if(loc.distance(Lloc)>0.1) {
 					if(loc.getBlockY()>Lloc.getBlockY()+0.3) if(event.getPlayer().getInventory().getChestplate() != null && event.getPlayer().getInventory().getChestplate().getType() != Material.ELYTRA || (!event.getPlayer().hasPotionEffect(PotionEffectType.JUMP) || !event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {
@@ -74,13 +96,13 @@ public class MyListener extends Thread implements Listener {
 				 }
 			}
 			if(JLA.atp) {cancel = false;if(Lloc!=null){try {
-				if(loc.distance(Lloc)>2 && !(event.getPlayer().hasPotionEffect(PotionEffectType.JUMP)||event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {cancel = true;
+				if(loc.distance(Lloc)>2 && !(event.getPlayer().hasPotionEffect(PotionEffectType.JUMP)||event.getPlayer().hasPotionEffect(PotionEffectType.LEVITATION))) {cancel = false;
 					if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.AIR && Lloc.getWorld().getBlockAt(loc.getBlockX(),Lloc.getBlockY(),Lloc.getBlockZ()).getType() == Material.AIR) {cancel = false;}
 					if(loc.getBlockY() < Lloc.getBlockY()-1)for(int i=0;i < Lloc.getBlockY()-loc.getBlockY(); i++) {if(Lloc.getWorld().getBlockAt(Lloc.getBlockX(),Lloc.getBlockY()-i,Lloc.getBlockZ()).getType() != Material.AIR) {cancel = true;}}
 					//Location loca = new Location(Lloc.getWorld(), Lloc.getBlockX(), Lloc.getBlockY(), Lloc.getBlockZ());
 					//event.getPlayer().teleport(loca);
 				}}catch(NoSuchFieldError e) {}
-				if(cancel) {loc = Lloc;if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}else{PlayerData.remove(player);event.setCancelled(cancel);}JLA.action("\n§6Please stop TP!", event.getPlayer());PlayerData.remove(player);if(JLA.log)System.out.println("AntiTP for: "+player);}}
+				if(cancel) {loc = Lloc;if(loc.distance(Lloc)>5) {event.getPlayer().teleport(Lloc);PlayerData.remove(player);}else{PlayerData.remove(player);event.setCancelled(cancel);}JLA.action("\n§6Please stop TP! Distance:-"+loc.distance(Lloc), event.getPlayer());PlayerData.remove(player);if(JLA.log)System.out.println("AntiTP for: "+player);}}
 			}
 			if(JLA.aliq>0) {
 				if(PlayerDPS.get(player)!=null) {if(PlayerDPS.get(player).get(3) != null) {}else{PlayerDPS.get(player).set(3, (float)Dnow.getTime());}}else{List<Object>tmp = new ArrayList<Object>();
@@ -89,7 +111,11 @@ public class MyListener extends Thread implements Listener {
 				tmp.add((float)Dnow.getTime());
 				tmp.add(null);//System.out.println(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType()+":"+loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType());
 				PlayerDPS.put(player, tmp);}
-				if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.WATER || loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() != Material.WATER) {PlayerDPS.get(player).set(3, (float)Dnow.getTime());}else if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>2000) {Location nLoc = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY()-JLA.aliq, loc.getBlockZ(), event.getPlayer().getLocation().getPitch(), event.getPlayer().getLocation().getYaw());/*try{if(event.getPlayer().getLocation().getYaw()!=0){nLoc.setYaw(event.getPlayer().getLocation().getYaw());}}catch(NoSuchMethodError e) {}*/event.getPlayer().teleport(nLoc);PlayerDPS.get(player).set(3, Dnow.getTime());}
+				if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.WATER || loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() != Material.WATER) {
+					PlayerDPS.get(player).set(3, (float)Dnow.getTime());
+				}else if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>1500+(pingSupported?getPing(event.getPlayer()):500)) {
+					Location nLoc = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY()-JLA.aliq, loc.getBlockZ(), event.getPlayer().getLocation().getYaw(), event.getPlayer().getLocation().getPitch());/*try{if(event.getPlayer().getLocation().getYaw()!=0){nLoc.setYaw(event.getPlayer().getLocation().getYaw());}}catch(NoSuchMethodError e) {}*/event.getPlayer().teleport(nLoc);PlayerDPS.get(player).set(3, Dnow.getTime());
+				}
 			}
 			if(cancel != true && JLA.bmps>0) {
 				if(PlayerDPS.get(player) != null) {
