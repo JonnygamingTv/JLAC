@@ -79,7 +79,7 @@ public class JLA extends JavaPlugin {
             String[] args) {
 		if (command.getName().equalsIgnoreCase("jla")) {
 			for(int i=0;i<args.length;i++){System.out.println(i+": "+args[i]);}
-			if(args.length>0 && args != null)if(args[0] != null)if(args[0].equalsIgnoreCase("itemspam")){if(args.length==2) {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0].equalsIgnoreCase("combatleave")){if(args.length==2) {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));return true;}}else if(args[0].equalsIgnoreCase("liq")) {if(args[1] != null) {aliq=(float)Float.parseFloat(args[1]);}else{sender.sendMessage(String.valueOf(aliq));return true;}}else 
+			if(args.length>0 && args != null)if(args[0] != null)if(args[0].equalsIgnoreCase("itemspam")){if(args.length==2) {ais = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(ais));}}else if(args[0].equalsIgnoreCase("combatleave")){if(args.length==2) {acl = Integer.parseInt(args[1]);}else{sender.sendMessage(String.valueOf(acl));return true;}}else if(args[0].equalsIgnoreCase("liq")) {if(args.length==2) {aliq=(float)Float.parseFloat(args[1]);}else{sender.sendMessage(String.valueOf(aliq));return true;}}else 
 				if(args[0].equalsIgnoreCase("reload")) {config = getConfig();
 				if(config.getString("DetectMessage")!="")dtcMsg=config.getString("DetectMessage");
 				if(config.getString("bancmd")!="")bancmd=config.getString("bancmd");
@@ -96,6 +96,8 @@ public class JLA extends JavaPlugin {
 					List<String>actions = Arrays.asList(config.getString("action").split(","));
 					actionList.put("-action",actions);
 				}
+				System.out.println("JLA Reloaded!");
+				sender.sendMessage("Reloaded!");return true;
 				}
 			sender.sendMessage("§a§lJLA\nby §4jonathanfi\n \n§b/jla itemspam <cooldown ms>§c\n/jla CombatLeave <cooldown ms>\n§6/jla liq <blocks>\n§f \n§d1 ms = 0.001 seconds");
 			return true;
