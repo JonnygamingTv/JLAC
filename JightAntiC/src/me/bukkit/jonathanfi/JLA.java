@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -60,6 +61,7 @@ public class JLA extends JavaPlugin {
 		if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
 			List<String>actions = Arrays.asList(config.getString("action").split(","));
 			actionList.put("-action",actions);
+			System.out.println(actions+"\n"+actions.size());
 		}
 		getLogger().info(config.getString("action"));
 		if(atp)getLogger().info("AntiTP");
@@ -95,6 +97,7 @@ public class JLA extends JavaPlugin {
 				if(config.getString("action") == "log") {log = true;getLogger().info(log?"Log":"Don't log");}else if(config.getString("action")!="") {
 					List<String>actions = Arrays.asList(config.getString("action").split(","));
 					actionList.put("-action",actions);
+					System.out.println(actionList.get("-action")+"\n"+actionList.get("-action").size());
 				}
 				System.out.println("JLA Reloaded!");
 				sender.sendMessage("Reloaded!");return true;
@@ -107,12 +110,15 @@ public class JLA extends JavaPlugin {
 	public static void action(String d, Player p) {
 		//if(config.getString("action") == "log") {System.out.println(d);}else if(config.getString("action") == "kick") {p.kickPlayer(config.getString("DetectMessage"));}
 		if(actionList.get("-action") != null) {String warn = "0";
-		if(actionList.get(p.getName())!=null) {warn = actionList.get(p.getName()).get(0);}int warns = Integer.parseInt(warn);if(warns>actionList.get("-action").size())warns=warns-1;
-		if(actionList.get("-action").get(warns)!=null){}else{warns = warns-1;}
+		if(actionList.get(p.getName())!=null) {warn = actionList.get(p.getName()).get(0);}int warns = Integer.parseInt(warn);if(warns>actionList.get("-action").size())warns=0;
+		warns = warns+1;
+		try {
+		if(actionList.get("-action").get(warns)!=null){}else{warns = 0;}
 		if(actionList.get(p.getName()) != null) {
 		actionList.get(p.getName()).set(0,String.valueOf(warns));}else {List<String>tmp = new ArrayList<String>();
 		tmp.add(String.valueOf(warns));
 			actionList.put(p.getName(),tmp);}
+		System.out.println(actionList.get("-action").get(warns));
 		switch(actionList.get("-action").get(warns)) {
 		case "log":
 			System.out.println(d);
@@ -124,9 +130,10 @@ public class JLA extends JavaPlugin {
 			p.kickPlayer(dtcMsg);
 			break;
 		case "ban":
-			p.performCommand(bancmd.replace("%player%", p.getName()));
+			Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(),bancmd.replace("%player%", p.getName()));
 			break;
-			default:p.performCommand(actionList.get("-action").get(warns).replace("%player%", p.getName()));
-		}}
+		default:
+			Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(),actionList.get("-action").get(warns).replace("%player%", p.getName()));
+		}}catch(Exception e) {}}
 	}
 }
