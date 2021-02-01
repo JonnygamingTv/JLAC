@@ -18,12 +18,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -113,7 +113,7 @@ public class MyListener extends Thread implements Listener {
 				PlayerDPS.put(player, tmp);}
 				if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).getType() == Material.WATER || loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() != Material.WATER) {
 					PlayerDPS.get(player).set(3, (float)Dnow.getTime());
-				}else if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>1500+(pingSupported?getPing(event.getPlayer()):500)) {
+				}else if(loc.getWorld().getBlockAt(loc.getBlockX(),loc.getBlockY()-1,loc.getBlockZ()).getType() == Material.WATER && (float)Dnow.getTime() - (float)PlayerDPS.get(player).get(3)>1400+(pingSupported?getPing(event.getPlayer()):500)) {
 					Location nLoc = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY()-JLA.aliq, loc.getBlockZ(), event.getPlayer().getLocation().getYaw(), event.getPlayer().getLocation().getPitch());/*try{if(event.getPlayer().getLocation().getYaw()!=0){nLoc.setYaw(event.getPlayer().getLocation().getYaw());}}catch(NoSuchMethodError e) {}*/event.getPlayer().teleport(nLoc);PlayerDPS.get(player).set(3, Dnow.getTime());
 				}
 			}
@@ -183,7 +183,7 @@ public class MyListener extends Thread implements Listener {
 		}
 	}
 	@EventHandler (priority = EventPriority.LOWEST)
-	public void onPlayerLeave1(PlayerKickEvent event) {
+	public void onPlayerLeave1(PlayerQuitEvent event) {
 		final String player = event.getPlayer().getName();
 		if(PlayerData.get(player) != null) {
 			PlayerData.remove(player);
@@ -196,9 +196,9 @@ public class MyListener extends Thread implements Listener {
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime();
 			if(Dnow.getTime() - PCD.get(player) < JLA.acl) {
-				event.getPlayer().setHealth(0);
-				PCD.remove(player);
+				event.getPlayer().setHealth(0.0D);
 			}
+			PCD.remove(player);
 		}
 	}
 	public static Map<String, Long> PDD = new HashMap<String, Long>();
