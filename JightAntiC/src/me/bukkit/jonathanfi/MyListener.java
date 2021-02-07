@@ -54,10 +54,10 @@ public class MyListener extends Thread implements Listener {
 	@EventHandler (priority = EventPriority.LOWEST)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		final String player = event.getPlayer().getName();
-		Location loc = event.getPlayer().getLocation();
 		if(!event.getPlayer().hasPermission("jla.cert")) {
+		Location loc = event.getPlayer().getLocation();
 		if(PlayerData.get(player) != null) {
-			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);Boolean cancel = false;
+			if(event.getPlayer().getAllowFlight() != true) {final Location Lloc = (Location) PlayerData.get(player);if(Lloc.getWorld()!=loc.getWorld())PlayerData.remove(player);Boolean cancel = false;
 			Calendar c1 = Calendar.getInstance();
 			Date Dnow = c1.getTime(); 
 			if(JLA.aflight>0) {Long mayCheat=(long)0;
