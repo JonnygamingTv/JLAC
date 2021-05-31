@@ -13,6 +13,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -48,6 +49,13 @@ public class MyListener implements Listener {
     				e.setTarget(ProxyServer.getInstance().getServerInfo("Hub"));
     				//e.getPlayer().connect(ProxyServer.getInstance().getServerInfo("Hub"));
     			}
+    	}
+    }
+    @EventHandler
+    public void onChat(ChatEvent e) {
+    	String name=e.getSender().toString();
+    	if(Db.needLogp(name)) if(!e.getMessage().startsWith("/login")&&!e.getMessage().startsWith("/register")){
+    		e.setCancelled(true);
     	}
     }
     @EventHandler
