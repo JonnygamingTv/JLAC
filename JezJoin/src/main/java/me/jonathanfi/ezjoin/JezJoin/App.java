@@ -13,7 +13,7 @@ public class App extends Plugin implements Listener {
 	public static boolean async=false;
     @Override
     public void onEnable() {
-        getLogger().info("Jon's EzJoin plugin is alive!");
+        getLogger().info("Getting configuration..");
         try {
         	if(!getDataFolder().exists()) {
         		getDataFolder().mkdir();
@@ -29,6 +29,7 @@ public class App extends Plugin implements Listener {
         	if(config.getBoolean("async"))async=true;
         	String hub=config.getString("Hub");
         	if(hub != null)if(hub != "") {MyListener.set(hub);}
+        	getLogger().info("Hub: "+hub+" | save: "+save+" | async: "+async);
         }catch(Exception er) {getLogger().info("Uh oh! Seems like you need to remove my folder in the plugins folder!");}
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Login());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Register());
