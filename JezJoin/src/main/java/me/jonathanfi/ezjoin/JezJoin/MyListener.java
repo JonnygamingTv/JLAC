@@ -35,7 +35,7 @@ public class MyListener implements Listener {
     	if(Db.getPpl(name, "")) {
     		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/login <password>\n\n").color(ChatColor.RED).create());
     	}else {
-    		Db.unsetLogp(name);Db.ison(name, true);
+    		Db.unsetLogp(name);
     		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/register <password>\n\n").color(ChatColor.RED).create());
     	}
     	}
@@ -97,7 +97,8 @@ public class MyListener implements Listener {
     			return;
     		}
     	}catch(Exception er) {}
-    	Db.setLogp(name);
+    	if(Db.needLogp(name))ProxyServer.getInstance().getPlayer(name).disconnect();
+    	Db.setLogp(name);Db.ison(name, true);
     	e.getConnection().setOnlineMode(false);
     	}
     }
