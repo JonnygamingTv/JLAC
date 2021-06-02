@@ -63,7 +63,8 @@ public class MyListener implements Listener {
     public void onJoin3(PreLoginEvent e) {
     	String name=e.getConnection().getName();
     	e.setCancelled(false);
-    	if(!Db.doexist(name))if(!Db.on(name)) {
+    	if(!Db.doexist(name)){
+    		if(Db.on(name))if(Db.needLogp(name))ProxyServer.getInstance().getPlayer(name).disconnect();
     	String requestUrl = "https://api.mojang.com/profiles/minecraft";
     	JsonArray payload = new JsonArray();
     	payload.add(name);
@@ -97,7 +98,6 @@ public class MyListener implements Listener {
     			return;
     		}
     	}catch(Exception er) {}
-    	if(Db.needLogp(name))ProxyServer.getInstance().getPlayer(name).disconnect();
     	Db.setLogp(name);Db.ison(name, true);
     	e.getConnection().setOnlineMode(false);
     	}
