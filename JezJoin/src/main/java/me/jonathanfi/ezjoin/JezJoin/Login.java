@@ -21,7 +21,9 @@ public class Login extends Command {
 				if(servur != "")p.connect(ProxyServer.getInstance().getServerInfo(servur));
 				Db.setsrv(p.getName(),"");Db.ison(p.getName(), true);
 				p.sendMessage(new ComponentBuilder("Logged in!").color(ChatColor.AQUA).create());}else{
-					p.sendMessage(new ComponentBuilder("Wrong password.").color(ChatColor.RED).create());
+					p.sendMessage(new ComponentBuilder("Wrong password.").color(ChatColor.RED).create());if(App.lTri>0){if(Db.tri(p.getName(),true)>App.lTri){
+						p.disconnect();
+					}}
 				}
 			}else {p.sendMessage(new ComponentBuilder("/login <password>").color(ChatColor.RED).create());}
 		}

@@ -39,7 +39,7 @@ public class MyListener implements Listener {
     	if(Db.getPpl(name, "")) {
     		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/login <password>\n\n").color(ChatColor.RED).create());
     	}else {
-    		Db.unsetLogp(name);
+    		if(!App.force)Db.unsetLogp(name);
     		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/register <password>\n\n").color(ChatColor.RED).create());
     	}
     	}
@@ -50,7 +50,7 @@ public class MyListener implements Listener {
     	if(Db.needLogp(name)) {
     		if(e.getTarget().getName() != null)
     			if(e.getTarget().getName() != hub) {
-    				Db.setsrv(name, e.getTarget().getName());
+    				if(App.tpserv)Db.setsrv(name, e.getTarget().getName());
     				e.setTarget(ProxyServer.getInstance().getServerInfo(hub));
     				//e.getPlayer().connect(ProxyServer.getInstance().getServerInfo("Hub"));
     			}

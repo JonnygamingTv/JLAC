@@ -9,6 +9,20 @@ public class Db {
 	private static Map<String,Boolean> exist = new HashMap<String,Boolean>();
 	private static Map<String,String> serv = new HashMap<String,String>();
 	private static Map<String,Boolean> pison = new HashMap<String,Boolean>();
+	private static Map<String,Integer> tries=new HashMap<String,Integer>();
+	public static int tri(String n, Boolean g) {
+		if(g) {
+			int num=0;
+			if(tries.containsKey(n)) {
+				num=tries.get(n);
+			}
+			tries.put(n,num+1);
+			return num;
+		}else if(tries.containsKey(n)){
+			return tries.get(n);
+		}
+		return 0;
+	}
 	public static void ison(String n,Boolean is) {
 		if(is) {
 			pison.put(n, true);
