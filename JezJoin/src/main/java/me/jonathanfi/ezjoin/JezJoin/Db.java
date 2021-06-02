@@ -8,6 +8,20 @@ public class Db {
 	private static Map<String,Boolean> lppl = new HashMap<String,Boolean>();
 	private static Map<String,Boolean> exist = new HashMap<String,Boolean>();
 	private static Map<String,String> serv = new HashMap<String,String>();
+	private static Map<String,Boolean> pison = new HashMap<String,Boolean>();
+	public static void ison(String n,Boolean is) {
+		if(is) {
+			pison.put(n, true);
+			return;
+		}
+		pison.remove(n);
+	}
+	public static boolean on(String n) {
+		if(pison.containsKey(n)) {
+			return true;
+		}
+		return false;
+	}
 	public static void setsrv(String n, String s) {
 		if(s != "") {
 			serv.put(n, s);

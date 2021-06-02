@@ -25,6 +25,7 @@ public class MyListener implements Listener {
     @EventHandler
     public void onLeave(PlayerDisconnectEvent e) {
     	Db.unsetLogp(e.getPlayer().getName());
+    	Db.ison(e.getPlayer().getName(), false);
     }
     @EventHandler
     public void onJoin2(PostLoginEvent e) {
@@ -34,7 +35,7 @@ public class MyListener implements Listener {
     	if(Db.getPpl(name, "")) {
     		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/login <password>\n\n").color(ChatColor.RED).create());
     	}else {
-    		Db.unsetLogp(name);
+    		Db.unsetLogp(name);Db.ison(name, true);
     		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/register <password>\n\n").color(ChatColor.RED).create());
     	}
     	}
@@ -62,7 +63,7 @@ public class MyListener implements Listener {
     public void onJoin3(PreLoginEvent e) {
     	String name=e.getConnection().getName();
     	e.setCancelled(false);
-    	if(!Db.doexist(name)) {
+    	if(!Db.doexist(name))if(!Db.on(name)) {
     	String requestUrl = "https://api.mojang.com/profiles/minecraft";
     	JsonArray payload = new JsonArray();
     	payload.add(name);
