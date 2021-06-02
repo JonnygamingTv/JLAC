@@ -22,6 +22,10 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public class MyListener implements Listener {
+	private static String hub = "Hub";
+	public static void set(String n) {
+		hub=n;
+	}
     @EventHandler
     public void onLeave(PlayerDisconnectEvent e) {
     	Db.unsetLogp(e.getPlayer().getName());
@@ -45,9 +49,9 @@ public class MyListener implements Listener {
     	String name=e.getPlayer().getName();
     	if(Db.needLogp(name)) {
     		if(e.getTarget().getName() != null)
-    			if(e.getTarget().getName() != "Hub") {
+    			if(e.getTarget().getName() != hub) {
     				Db.setsrv(name, e.getTarget().getName());
-    				e.setTarget(ProxyServer.getInstance().getServerInfo("Hub"));
+    				e.setTarget(ProxyServer.getInstance().getServerInfo(hub));
     				//e.getPlayer().connect(ProxyServer.getInstance().getServerInfo("Hub"));
     			}
     	}
