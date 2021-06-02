@@ -37,10 +37,10 @@ public class MyListener implements Listener {
     	ProxiedPlayer p = (ProxiedPlayer) e.getPlayer();
     	if(Db.needLogp(name)) {
     	if(Db.getPpl(name, "")) {
-    		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/login <password>\n\n").color(ChatColor.RED).create());
+    		p.sendMessage(new ComponentBuilder(App.motd+"\n\n/login <password>\n\n").color(ChatColor.RED).create());
     	}else {
     		if(!App.force)Db.unsetLogp(name);
-    		p.sendMessage(new ComponentBuilder("JonHosting.com\n\n/register <password>\n\n").color(ChatColor.RED).create());
+    		p.sendMessage(new ComponentBuilder(App.motd+"\n\n/register <password>\n\n").color(ChatColor.RED).create());
     	}
     	}
     }

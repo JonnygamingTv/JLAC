@@ -14,6 +14,7 @@ public class App extends Plugin implements Listener {
 	public static boolean tpserv=true;
 	public static boolean force=false;
 	public static int lTri=0;
+	public static String motd="JonHosting.com";
     @Override
     public void onEnable() {
         getLogger().info("Getting configuration..");
@@ -22,7 +23,7 @@ public class App extends Plugin implements Listener {
         		getDataFolder().mkdir();
         	}
         	File fil = new File(getDataFolder(),"config.yml");
-        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\n# Hub is the server where person would be forced to /login in.\nloginTries: 0\nloginPunishment: kick # more support coming soon\nloginTp: true # teleport player back to the server they were going to after /login.\nforce: false # force /register\nsave: false # save on file what logins the players got\nasync: false\nmotd: https://JonHosting.com");
+        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nsave: false\nasync: false\nmotd: web.JonHosting.com");
         	if(!fil.exists()) {
         		try{
         			ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File(getDataFolder(), "config.yml"));
@@ -34,6 +35,8 @@ public class App extends Plugin implements Listener {
         	if(hub!=null)if(hub!=""){MyListener.set(hub);}
         	if(config.getBoolean("tpserv")==false)tpserv=false;
         	if(config.getBoolean("force"))force=true;
+        	motd=config.getString("motd");
+        	if(motd==""||motd.length()<2)motd="JonHosting.com";
         	lTri=config.getInt("loginTries");
         	getLogger().info("Hub: "+hub+" | Tpserv: "+tpserv+" | Force: "+force+" | Tries: "+lTri+" | save: "+save+" | async: "+async);
         }catch(Exception er) {getLogger().info("Uh oh! Seems like you need to remove my folder in the plugins folder!");}

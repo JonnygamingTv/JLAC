@@ -17,7 +17,8 @@ public class Register extends Command {
 				if(Db.getPpl(p.getName(), "")) {
 					p.sendMessage(new ComponentBuilder("Already registered.").color(ChatColor.RED).create());
 				}else{Db.setPpl(p.getName(), args[0]);Db.unsetLogp(p.getName());
-				p.sendMessage(new ComponentBuilder("Registered!").color(ChatColor.GREEN).create());}
+				p.sendMessage(new ComponentBuilder("Registered!").color(ChatColor.GREEN).create());Db.unsetLogp(p.getName());
+				}
 			}else{p.sendMessage(new ComponentBuilder("/register <password>").color(ChatColor.RED).create());}
 		}
 	}
