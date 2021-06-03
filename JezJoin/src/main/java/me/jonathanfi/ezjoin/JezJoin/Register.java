@@ -2,6 +2,7 @@ package me.jonathanfi.ezjoin.JezJoin;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -17,7 +18,7 @@ public class Register extends Command {
 				if(Db.getPpl(p.getName(), "")) {
 					p.sendMessage(new ComponentBuilder("Already registered.").color(ChatColor.RED).create());
 				}else{Db.setPpl(p.getName(), args[0]);Db.unsetLogp(p.getName());
-				p.sendMessage(new ComponentBuilder("Registered!").color(ChatColor.GREEN).create());Db.unsetLogp(p.getName());
+				p.sendMessage(new ComponentBuilder("Registered!").color(ChatColor.GREEN).create());Db.unsetLogp(p.getName());String servur = Db.getsrv(p.getName());if(servur != "")p.connect(ProxyServer.getInstance().getServerInfo(servur));
 				}
 			}else{p.sendMessage(new ComponentBuilder("/register <password>").color(ChatColor.RED).create());}
 		}

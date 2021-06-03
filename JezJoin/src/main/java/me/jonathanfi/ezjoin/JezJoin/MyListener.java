@@ -47,13 +47,17 @@ public class MyListener implements Listener {
     @EventHandler
     public void onShift(ServerConnectEvent e) {
     	String name=e.getPlayer().getName();
+    	String ip;
     	if(Db.needLogp(name)) {
     		if(e.getTarget().getName() != null)
     			if(e.getTarget().getName() != hub) {
     				if(App.tpserv)Db.setsrv(name, e.getTarget().getName());
     				e.setTarget(ProxyServer.getInstance().getServerInfo(hub));
-    				//e.getPlayer().connect(ProxyServer.getInstance().getServerInfo("Hub"));
     			}
+    	}else if((ip=e.getPlayer().getPendingConnection().getVirtualHost().getHostString()) != null) {
+    		if(Db.alias.containsKey(ip)) {
+    			e.setTarget(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));
+    		}
     	}
     }
     @EventHandler
