@@ -18,11 +18,11 @@ public class Salias extends Command {
 		if ((sender instanceof ProxiedPlayer)) {
 			sender.sendMessage(new ComponentBuilder("This command is for console.").color(ChatColor.GOLD).create());
 		}else{
-			if(args.length==3) {
-				System.out.println("[JezJoin] Server name: "+args[0]+"\nServer IP: "+args[1]+"\nServer port: "+args[2]);
+			if(args.length>2) {
+				System.out.println("[JezJoin] /salias <name> <ip> <port> [restrict]\nServer name: "+args[0]+"\nServer IP: "+args[1]+"\nServer port: "+args[2]);
 				try {
 				InetSocketAddress socketAddress = new InetSocketAddress(args[1], Integer.parseInt(args[2]));
-				ServerInfo info = ProxyServer.getInstance().constructServerInfo(args[0], socketAddress, "JonHosting.com", false);
+				ServerInfo info = ProxyServer.getInstance().constructServerInfo(args[0], socketAddress, "JonHosting.com", (args[3]!=null?true:false));
 				ProxyServer.getInstance().getServers().put(args[0], info);
 				}catch(Exception er) {er.printStackTrace();}
 			}else if(args.length==2) {
