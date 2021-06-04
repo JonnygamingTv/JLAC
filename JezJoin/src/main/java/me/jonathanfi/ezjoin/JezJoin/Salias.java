@@ -22,7 +22,9 @@ public class Salias extends Command {
 				System.out.println("[JezJoin] /salias <name> <ip> <port> [restrict]\nServer name: "+args[0]+"\nServer IP: "+args[1]+"\nServer port: "+args[2]);
 				try {
 				InetSocketAddress socketAddress = new InetSocketAddress(args[1], Integer.parseInt(args[2]));
-				ServerInfo info = ProxyServer.getInstance().constructServerInfo(args[0], socketAddress, "JonHosting.com", (args[3]!=null?true:false));
+				boolean restr=false;
+				if(args.length==4)restr=true;
+				ServerInfo info = ProxyServer.getInstance().constructServerInfo(args[0], socketAddress, "JonHosting.com", restr);
 				ProxyServer.getInstance().getServers().put(args[0], info);
 				}catch(Exception er) {er.printStackTrace();}
 			}else if(args.length==2) {
