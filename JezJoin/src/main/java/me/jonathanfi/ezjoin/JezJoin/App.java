@@ -85,6 +85,7 @@ public class App extends Plugin implements Listener {
         }catch(Exception er) {er.printStackTrace();getLogger().info("Uh oh! Seems like you need to remove my folder in the plugins folder!");}
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Login());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Register());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Salias());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new MyListener());
     }
 }
