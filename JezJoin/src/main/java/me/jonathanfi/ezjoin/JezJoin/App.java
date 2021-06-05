@@ -22,6 +22,7 @@ public class App extends Plugin implements Listener {
 	public static boolean async=false;
 	public static boolean tpserv=true;
 	public static boolean force=false;
+	public static boolean forceIP=false;
 	public static int lTri=0;
 	public static String motd="JonHosting.com";
     @Override
@@ -32,7 +33,7 @@ public class App extends Plugin implements Listener {
         		getDataFolder().mkdir();
         	}
         	File fil = new File(getDataFolder(),"config.yml");
-        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nsave: false\nasync: false\nmotd: web.JonHosting.com");
+        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nmotd: web.JonHosting.com\nforceIP: false\nsave: false\nasync: false");
         	if(!fil.exists()) {
         		try{
         			ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,fil);
@@ -44,6 +45,7 @@ public class App extends Plugin implements Listener {
         	if(hub!=null)if(hub!=""){MyListener.set(hub);}
         	if(config.getBoolean("tpserv")==false)tpserv=false;
         	if(config.getBoolean("force"))force=true;
+        	if(config.getBoolean("forceIP"))forceIP=true;
         	motd=config.getString("motd");
         	if(motd==""||motd.length()<2)motd="JonHosting.com";
         	lTri=config.getInt("loginTries");
@@ -86,6 +88,7 @@ public class App extends Plugin implements Listener {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Login());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Register());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Salias());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Jservforce());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new MyListener());
     }
 }

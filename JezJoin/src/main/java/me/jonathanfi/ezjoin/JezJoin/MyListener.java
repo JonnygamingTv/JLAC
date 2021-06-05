@@ -56,7 +56,7 @@ public class MyListener implements Listener {
     			}
     	}else if((ip=e.getPlayer().getPendingConnection().getVirtualHost().getHostString()) != null) {
     		if(Db.alias.containsKey(ip)) {
-    			e.setTarget(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));
+    			if((!Db.on(name))||App.forceIP||Db.ipforce.containsKey(ip)) {Db.ison(name, true);e.setTarget(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));}
     		}
     	}
     }
@@ -106,7 +106,7 @@ public class MyListener implements Listener {
     			return;
     		}
     	}catch(Exception er) {}
-    	Db.setLogp(name);Db.ison(name, true);
+    	Db.setLogp(name);
     	e.getConnection().setOnlineMode(false);
     	}
     }

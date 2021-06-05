@@ -11,6 +11,7 @@ public class Db {
 	private static Map<String,Boolean> pison = new HashMap<String,Boolean>();
 	private static Map<String,Integer> tries=new HashMap<String,Integer>();
 	public static Map<String,String> alias=new HashMap<String,String>();
+	public static Map<String,Boolean> ipforce=new HashMap<String,Boolean>();
 	public static int tri(String n, Boolean g) {
 		if(g) {
 			int num=0;

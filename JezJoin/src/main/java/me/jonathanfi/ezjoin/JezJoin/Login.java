@@ -17,10 +17,18 @@ public class Login extends Command {
 			ProxiedPlayer p = (ProxiedPlayer)sender;
 			if(args.length>0) {
 				if(Db.getPpl(p.getName(), args[0])) {Db.unsetLogp(p.getName());
-				String servur = Db.getsrv(p.getName());
-				if(servur != "")p.connect(ProxyServer.getInstance().getServerInfo(servur));
 				Db.setsrv(p.getName(),"");Db.ison(p.getName(), true);
-				p.sendMessage(new ComponentBuilder("Logged in!").color(ChatColor.AQUA).create());}else{
+				p.sendMessage(new ComponentBuilder("Logged in!").color(ChatColor.AQUA).create());
+				String servur = Db.getsrv(p.getName());
+				if(servur != "") {p.connect(ProxyServer.getInstance().getServerInfo(servur));}else {
+				String ip;
+				if((ip=p.getPendingConnection().getVirtualHost().getHostString()) != null) {
+		    		if(Db.alias.containsKey(ip)) {
+		    			if(App.forceIP||Db.ipforce.containsKey(ip)) {p.connect(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));}
+		    		}
+		    	}
+				}
+				}else{
 					p.sendMessage(new ComponentBuilder("Wrong password.").color(ChatColor.RED).create());if(App.lTri>0){if(Db.tri(p.getName(),true)>App.lTri){
 						p.disconnect();
 					}}
