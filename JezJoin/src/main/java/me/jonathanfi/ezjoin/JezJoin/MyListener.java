@@ -70,8 +70,11 @@ public class MyListener implements Listener {
     @EventHandler
     public void onJoin3(PreLoginEvent e) {
     	String name=e.getConnection().getName();
-    	e.setCancelled(false);
-    	if(!Db.doexist(name)){
+    	boolean ignor=false;
+    	if(App.ignore!=null)if(name.substring(0,App.ignore.length())==App.ignore) {
+    		ignor=true;
+    	}
+    	if(!Db.doexist(name)&&!ignor){e.setCancelled(false);
     		if(Db.on(name))if(Db.needLogp(name))ProxyServer.getInstance().getPlayer(name).disconnect();
     	String requestUrl = "https://api.mojang.com/profiles/minecraft";
     	JsonArray payload = new JsonArray();

@@ -23,6 +23,8 @@ public class App extends Plugin implements Listener {
 	public static boolean tpserv=true;
 	public static boolean force=false;
 	public static boolean forceIP=false;
+	public static String ignore=null;
+	public static String prefix=null;
 	public static int lTri=0;
 	public static String motd="JonHosting.com";
     @Override
@@ -33,7 +35,7 @@ public class App extends Plugin implements Listener {
         		getDataFolder().mkdir();
         	}
         	File fil = new File(getDataFolder(),"config.yml");
-        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nmotd: web.JonHosting.com\nforceIP: false\nsave: false\nasync: false");
+        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nignore: \".\"\nprefix: \"-\"\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nmotd: web.JonHosting.com\nforceIP: false\nsave: false\nasync: false");
         	if(!fil.exists()) {
         		try{
         			ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,fil);
@@ -49,7 +51,14 @@ public class App extends Plugin implements Listener {
         	motd=config.getString("motd");
         	if(motd==""||motd.length()<2)motd="JonHosting.com";
         	lTri=config.getInt("loginTries");
+        	if(config.getString("prefix")!=null&&config.getString("prefix")!="") {
+        		prefix=config.getString("prefix");
+        	}
         	getLogger().info("Hub: "+hub+" | Tpserv: "+tpserv+" | Force: "+force+" | Tries: "+lTri+" | save: "+save+" | async: "+async);
+        	if(config.getString("ignore")!=null&&config.getString("ignore")!="") {
+        		ignore=config.getString("ignore");
+        	}
+        	if(ignore!=null)getLogger().info("ignoring people starting by '"+ignore+"'!");
         	File file = new File(getDataFolder(),"servs.json");
         	Configuration alias = ConfigurationProvider.getProvider(JsonConfiguration.class).load("{\"jonhosting.com\": \"Hub\",\n\"s.jonhosting.com\": \"Survival\"}");
         	if(!file.exists()) {
