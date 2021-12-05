@@ -20,13 +20,14 @@ public class Login extends Command {
 				Db.setsrv(p.getName(),"");Db.ison(p.getName(), true);
 				p.sendMessage(new ComponentBuilder("Logged in!").color(ChatColor.AQUA).create());
 				String servur = Db.getsrv(p.getName());
-				if(servur != "") {p.connect(ProxyServer.getInstance().getServerInfo(servur));}else {
+				if(servur != "") {p.connect(ProxyServer.getInstance().getServerInfo(servur));return;}else {
 				String ip;
 				if((ip=p.getPendingConnection().getVirtualHost().getHostString()) != null) {
 		    		if(Db.alias.containsKey(ip)) {
-		    			if(App.forceIP||Db.ipforce.containsKey(ip)) {p.connect(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));}
+		    			if(App.forceIP||Db.ipforce.containsKey(ip)) {p.connect(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));return;}
 		    		}
 		    	}
+				if(MyListener.hub3!="") {p.connect(ProxyServer.getInstance().getServerInfo(MyListener.hub3));}
 				}
 				}else{
 					p.sendMessage(new ComponentBuilder("Wrong password.").color(ChatColor.RED).create());if(App.lTri>0){if(Db.tri(p.getName(),true)>App.lTri){

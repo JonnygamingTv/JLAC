@@ -9,20 +9,26 @@ import java.net.URL;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
+import net.md_5.bungee.api.Callback;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
+import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 public class MyListener implements Listener {
 	private static String hub = "Hub";
+	public static String hub2;
+	public static String hub3;
 	public static void set(String n) {
 		hub=n;
 	}
@@ -68,14 +74,78 @@ public class MyListener implements Listener {
     	}
     }
     @EventHandler
+    public void onPing(ProxyPingEvent e) {
+    	final String ip;
+    	if(e.getConnection().getVirtualHost()!=null)if((ip=e.getConnection().getVirtualHost().getHostString())!=null)if(Db.alias.containsKey(ip)) {
+    		ServerInfo gg = ProxyServer.getInstance().getServerInfo(Db.alias.get(ip));
+    		if(gg!=null) {
+    		final ProxyPingEvent ev = e;
+    		Callback<ServerPing> callback = new Callback<ServerPing>() {
+				@SuppressWarnings("deprecation")
+				@Override
+				public void done(ServerPing result, Throwable error) {
+					ServerPing og = ev.getResponse();
+					if(result!=null) {
+						if(!Db.pingFavi.containsKey(ip))result.setFavicon(og.getFaviconObject());
+						if(!Db.pingP.containsKey(ip))result.setPlayers(og.getPlayers());
+						if(!Db.pingMotD.containsKey(ip))result.setDescription(og.getDescription());
+						ev.setResponse(result);
+					}else if(Db.pingF.containsKey(ip)){
+						//net.md_5.bungee.chat.BaseComponentSerializer
+						og.setDescription(Db.pingF.get(ip));
+						ev.setResponse(og);
+					}
+				}
+    		};
+    		//gg.getMotd();
+    		//ServerPing res = null;
+			gg.ping(callback);
+			//Throwable err = null;
+			//callback.done(res, err);
+			//ServerPing res = null;
+			//Throwable err = null;
+			//if(callback!=null)callback.done(res, err);
+    		}
+    	}
+    }
+    @EventHandler
     public void onJoin3(PreLoginEvent e) {
     	String name=e.getConnection().getName();
     	boolean ignor=false;
-    	if(App.ignore!=null)if(name.substring(0,App.ignore.length())==App.ignore) {
+    	if(App.ignore!=null) {
+    		for(int i=0;i<App.ignore.size();i++) {
+    	String str=name.substring(0,App.ignore.get(i).toString().length());
+    	if(str==App.ignore.get(i).toString()||str.contentEquals(App.ignore.get(i).toString())) {
     		ignor=true;
     	}
+    		}
+    	}
+    	if(!ignor&&App.blacklist!=null) {
+			for(int i=0;i<App.blacklist.size();i++) {
+		    	String str=name;
+		    	if(str.contains(App.blacklist.get(i).toString())) {
+		    		ignor=true;
+		    	}
+			}
+		}
     	if(!Db.doexist(name)&&!ignor){e.setCancelled(false);
     		if(Db.on(name))if(Db.needLogp(name))ProxyServer.getInstance().getPlayer(name).disconnect();
+    	if(App.whitelist!=null) {
+    		for(int i=0;i<App.whitelist.size();i++) {
+    			String str=name;
+    			if(str.contains(App.whitelist.get(i).toString())) {
+		    		ignor=true;
+		    		Db.setLogp(name);
+		        	e.getConnection().setOnlineMode(false);
+		    	}
+    		}
+    	}
+    	if(!ignor)if(name.length()<App.minlength) {
+    		Db.setLogp(name);
+        	e.getConnection().setOnlineMode(false);
+    		ignor=true;
+    	}
+    	if(!ignor) {
     	String requestUrl = "https://api.mojang.com/profiles/minecraft";
     	JsonArray payload = new JsonArray();
     	payload.add(name);
@@ -111,6 +181,7 @@ public class MyListener implements Listener {
     	}catch(Exception er) {}
     	Db.setLogp(name);
     	e.getConnection().setOnlineMode(false);
+    	}
     	}
     }
 }

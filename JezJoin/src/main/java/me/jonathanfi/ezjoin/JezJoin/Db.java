@@ -1,7 +1,13 @@
 package me.jonathanfi.ezjoin.JezJoin;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Db {
 	private static Map<String,String> ppl = new HashMap<String,String>();
@@ -11,7 +17,12 @@ public class Db {
 	private static Map<String,Boolean> pison = new HashMap<String,Boolean>();
 	private static Map<String,Integer> tries=new HashMap<String,Integer>();
 	public static Map<String,String> alias=new HashMap<String,String>();
+	public static Map<String,Boolean> pingMotD=new HashMap<String,Boolean>();
+	public static Map<String,Boolean> pingFavi=new HashMap<String,Boolean>();
+	public static Map<String,Boolean> pingP=new HashMap<String,Boolean>();
+	public static Map<String,String> pingF=new HashMap<String,String>();
 	public static Map<String,Boolean> ipforce=new HashMap<String,Boolean>();
+	private static File Directory;
 	public static int tri(String n, Boolean g) {
 		if(g) {
 			int num=0;
@@ -68,7 +79,25 @@ public class Db {
 	public static void unsetLogp(String name) {
 		lppl.remove(name);
 	}
-	public static boolean getPpl(String name, String pw) {
+	public static boolean getPpl(String name, String pw) {	
+		if(App.uF) {
+			File fil = new File(Directory,name);
+			if(pw!="") {
+			if(fil.canRead()) {
+			try {
+        		Scanner myReader = new Scanner(fil);
+        		String dat = "";
+        		while (myReader.hasNextLine()) {
+        			dat += myReader.nextLine();
+        		}
+        		myReader.close();
+        		return dat.contentEquals(pw);
+			} catch (FileNotFoundException e) {}
+			}
+			}else {
+				return fil.canRead();
+			}
+		}else
 		if(ppl.containsKey(name)) {
 		if(pw != "") {
 			if(ppl.get(name).contentEquals(pw)) {return true;}
@@ -80,9 +109,16 @@ public class Db {
 	}
 
 	public static void setPpl(String name, String pw) {
+		if(App.save) {
+			try {
+			File fil = new File(Directory,name);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(fil));
+			writer.write(pw);writer.close();
+			} catch (IOException e) {}
+		}else
 		ppl.put(name, pw);
 	}
-	public static void savePpl() {
-		// coming soon
+	public static void sDir(File file) {
+		Directory = file;
 	}
 }
