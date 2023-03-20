@@ -110,6 +110,7 @@ public class MyListener implements Listener {
 						ev.setResponse(result);
 					}else if(Db.pingF.containsKey(ip)){
 						//net.md_5.bungee.chat.BaseComponentSerializer
+						//net.md_5.bungee.api.chat.BaseComponent desc = new net.md_5.bungee.api.chat.TextComponent(Db.pingF.get(ip));
 						og.setDescription(Db.pingF.get(ip));
 						ev.setResponse(og);
 					}

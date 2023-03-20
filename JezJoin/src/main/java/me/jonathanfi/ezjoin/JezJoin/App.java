@@ -173,6 +173,7 @@ public class App extends Plugin implements Listener {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Register());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Salias());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Jservforce());
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Spingconf());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new MyListener());
     }
     @Override

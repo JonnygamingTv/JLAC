@@ -18,14 +18,20 @@ public class Spingconf extends Command {
 				System.out.println("Set ping config for IP: "+args[0]);
 				if(args[1]=="true") {
 					Db.pingP.put(args[0], true);
+				}else {
+					Db.pingP.put(args[0], false);
 				}
 				if(args[2]=="true") {
 					Db.pingFavi.put(args[0], true);
+				}else {
+					Db.pingFavi.put(args[0], false);
 				}
 				if(args[3]=="true") {
 					Db.pingMotD.put(args[0], true);
+				}else {
+					Db.pingMotD.put(args[0], false);
 				}
-				if(args.length>4&&args[4]!="")Db.pingF.put(args[0],args[4]);
+				if(args.length>4) {if(args[4]!="") {Db.pingF.put(args[0],args[4]);}else{Db.pingF.compute(args[0], null);}}
 				
 			}else{
 				System.out.println("[JezJoin] /Spingconf <ip> <playercount?> <icon?> <motd?> [message]");
