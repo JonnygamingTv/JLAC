@@ -15,13 +15,17 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
+import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
+//import net.md_5.bungee.api.event.PlayerHandshakeEvent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
+//import net.md_5.bungee.api.event.ServerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -32,6 +36,7 @@ public class MyListener implements Listener {
 	public static void set(String n) {
 		hub=n;
 	}
+	
     @EventHandler
     public void onLeave(PlayerDisconnectEvent e) {
     	Db.unsetLogp(e.getPlayer().getName());
@@ -40,13 +45,17 @@ public class MyListener implements Listener {
     @EventHandler
     public void onJoin2(PostLoginEvent e) {
     	String name=e.getPlayer().getName();
+    	System.out.println("[JJ] Done Logged in: "+name);
     	ProxiedPlayer p = (ProxiedPlayer) e.getPlayer();
     	if(Db.needLogp(name)) {
+    		if(App.fpx||name.substring(0,App.prefix.length())!=App.prefix) {
+    			p.setDisplayName(App.prefix+name);
+    		}
     	if(Db.getPpl(name, "")) {
-    		p.sendMessage(new ComponentBuilder(App.motd+"\n\n/login <password>\n\n").color(ChatColor.RED).create());
+    		p.sendMessage(new ComponentBuilder(App.motd+App.logMsg).color(ChatColor.RED).create());
     	}else {
     		if(!App.force)Db.unsetLogp(name);
-    		p.sendMessage(new ComponentBuilder(App.motd+"\n\n/register <password>\n\n").color(ChatColor.RED).create());
+    		p.sendMessage(new ComponentBuilder(App.motd+App.regMsg).color(ChatColor.RED).create());
     	}
     	}
     }
@@ -73,22 +82,31 @@ public class MyListener implements Listener {
     		e.setCancelled(true);
     	}
     }
-    @EventHandler
+    @EventHandler (priority = net.md_5.bungee.event.EventPriority.HIGH)
     public void onPing(ProxyPingEvent e) {
     	final String ip;
-    	if(e.getConnection().getVirtualHost()!=null)if((ip=e.getConnection().getVirtualHost().getHostString())!=null)if(Db.alias.containsKey(ip)) {
+    	if(e.getConnection().getVirtualHost()!=null&&(ip=e.getConnection().getVirtualHost().getHostString())!=null&&Db.alias.containsKey(ip)) {
     		ServerInfo gg = ProxyServer.getInstance().getServerInfo(Db.alias.get(ip));
     		if(gg!=null) {
+    			if(Db.ipPing.containsKey(ip)) {
+    				ServerPing og = e.getResponse();
+    				ServerPing LastPing = Db.ipPing.get(ip);
+    				if(!Db.pingFavi.containsKey(ip))LastPing.setFavicon(og.getFaviconObject());
+					if(!Db.pingP.containsKey(ip))LastPing.setPlayers(og.getPlayers());
+					if(!Db.pingMotD.containsKey(ip))LastPing.setDescriptionComponent(og.getDescriptionComponent());
+					e.setResponse(LastPing);
+    			}
     		final ProxyPingEvent ev = e;
     		Callback<ServerPing> callback = new Callback<ServerPing>() {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void done(ServerPing result, Throwable error) {
+					Db.ipPing.put(ip, result);
 					ServerPing og = ev.getResponse();
 					if(result!=null) {
 						if(!Db.pingFavi.containsKey(ip))result.setFavicon(og.getFaviconObject());
 						if(!Db.pingP.containsKey(ip))result.setPlayers(og.getPlayers());
-						if(!Db.pingMotD.containsKey(ip))result.setDescription(og.getDescription());
+						if(!Db.pingMotD.containsKey(ip))result.setDescriptionComponent(og.getDescriptionComponent());
 						ev.setResponse(result);
 					}else if(Db.pingF.containsKey(ip)){
 						//net.md_5.bungee.chat.BaseComponentSerializer
@@ -110,6 +128,8 @@ public class MyListener implements Listener {
     }
     @EventHandler
     public void onJoin3(PreLoginEvent e) {
+    	if(!App.enabled)return;
+    	System.out.println("[JJ] Logging in: "+(e.getConnection().getUniqueId()!=null?e.getConnection().getUniqueId():e.getConnection().getName()));
     	String name=e.getConnection().getName();
     	boolean ignor=false;
     	if(App.ignore!=null) {
@@ -184,4 +204,31 @@ public class MyListener implements Listener {
     	}
     	}
     }
+
+    @EventHandler
+    public void onLogin(LoginEvent e) {
+    	System.out.println("[JJ:"+e.getConnection().getVirtualHost().getHostString()+"] Logged in: "+(e.getConnection().getUniqueId()!=null?e.getConnection().getUniqueId():e.getConnection().getName()));
+    	PendingConnection connection = e.getConnection();
+    	String name = connection.getName();
+    	if(!connection.isOnlineMode()) {
+    		boolean ignor=false;
+    		if(App.ignore!=null) {
+    	    	for(int i=0;i<App.ignore.size();i++) {
+    	    		String str=name.substring(0,App.ignore.get(i).toString().length());
+    	    		if(str==App.ignore.get(i).toString()||str.contentEquals(App.ignore.get(i).toString())) {
+    	    			ignor=true;
+    	    		}
+    	    	}
+    		}
+    		if(!ignor) {
+    			Db.setLogp(name);
+    			System.out.println("[JezJ] Offline mode detected: "+App.prefix+name);
+    		}
+    	}
+    }
+    /*
+    @EventHandler
+    public void onAuth(PlayerHandshakeEvent e) {
+    	System.out.println(e.getHandshake()+" handshake [JezJ]");
+    }*/
 }

@@ -21,7 +21,7 @@ public class Jservforce extends Command {
 				Db.ipforce.remove(args[0]);
 				System.out.println("[JezJoin] Removed "+args[0]+" from force");
 			}else{
-				System.out.println("[JezJoin] /salias <ip> <force>");
+				System.out.println("[JezJoin] /jservforce <ip> <force>");
 			}
 		}
 	}

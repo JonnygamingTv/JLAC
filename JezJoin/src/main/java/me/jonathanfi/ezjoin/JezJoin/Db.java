@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import net.md_5.bungee.api.ServerPing;
+
 public class Db {
 	private static Map<String,String> ppl = new HashMap<String,String>();
 	private static Map<String,Boolean> lppl = new HashMap<String,Boolean>();
@@ -22,6 +24,7 @@ public class Db {
 	public static Map<String,Boolean> pingP=new HashMap<String,Boolean>();
 	public static Map<String,String> pingF=new HashMap<String,String>();
 	public static Map<String,Boolean> ipforce=new HashMap<String,Boolean>();
+	public static Map<String,ServerPing> ipPing=new HashMap<String,ServerPing>();
 	private static File Directory;
 	public static int tri(String n, Boolean g) {
 		if(g) {

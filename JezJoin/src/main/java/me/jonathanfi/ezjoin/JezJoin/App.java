@@ -19,19 +19,24 @@ import net.md_5.bungee.config.JsonConfiguration;
 import net.md_5.bungee.config.YamlConfiguration;
 
 public class App extends Plugin implements Listener {
+	public static boolean enabled=true;
 	public static boolean save=false;
 	public static boolean uF=false;
 	public static boolean async=false;
 	public static boolean tpserv=true;
 	public static boolean force=false;
 	public static boolean forceIP=false;
+	public static boolean fpx=false;
+	public static int minlength=0;
+	public static int lTri=0;
+	public static String prefix=null;
+	public static String offservmotd="§cOffline";
+	public static String motd="JonHosting.com";
+	public static String logMsg="\n\n/login <password>\n\n";
+	public static String regMsg="\n\n/register <password>\n\n";
 	public static List<String> ignore=null;
 	public static List<String> blacklist=null;
 	public static List<String> whitelist=null;
-	public static int minlength=0;
-	public static String prefix=null;
-	public static int lTri=0;
-	public static String motd="JonHosting.com";
     @Override
     public void onEnable() {
         getLogger().info("Getting configuration..");
@@ -45,7 +50,7 @@ public class App extends Plugin implements Listener {
         	}
         	Db.sDir(pD);
         	File fil = new File(getDataFolder(),"config.yml");
-        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nsend-login: Lobby\nsend-reg: Lobby\nignore:\n  - \".\"\nblacklist:\n  - \"§\"\nwhitelist:\n  - \"-\"\nminlength: 3\nprefix: \"-\"\naddPrefix: false\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nmotd: web.JonHosting.com\noffServMotD: \"§cOffline\"\nforceIP: false\nsave: false\nuseFiles: false\nasync: false");
+        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nsend-login: Lobby\nsend-reg: Lobby\nignore:\n  - \".\"\nblacklist:\n  - \"§\"\nwhitelist:\n  - \"-\"\nminlength: 3\nprefix: \"-\"\naddPrefix: false\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nmotd: web.JonHosting.com\nloginMsg: \"\\n\\n/login <password>\\n\\n\"\nregisterMsg: \"\\n\\n/register <password>\\n\\n\"\noffServMotD: \"§cOffline\"\nforceIP: false\nsave: false\nuseFiles: false\nasync: false\ndisabled: false");
         	if(!fil.exists()) {
         		try{
         			ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,fil);
@@ -65,12 +70,15 @@ public class App extends Plugin implements Listener {
         	if(config.getBoolean("forceIP"))forceIP=true;
         	motd=config.getString("motd");
         	if(motd==""||motd.length()<2)motd="JonHosting.com";
+        	logMsg=config.getString("loginMsg");
+        	regMsg=config.getString("registerMsg");
         	lTri=config.getInt("loginTries");
         	minlength=config.getInt("minlength");
         	if(config.getString("prefix")!=null&&config.getString("prefix")!="") {
         		prefix=config.getString("prefix");
         	}
-        	getLogger().info("Hub: "+hub+" | Tpserv: "+tpserv+" | Force: "+force+" | Tries: "+lTri+" | save: "+save+" | uF: "+uF+" | async: "+async);
+        	if(config.getBoolean("addPrefix"))fpx=true;
+        	getLogger().info("Hub: "+hub+" | Prefix: "+prefix+" | Tpserv: "+tpserv+" | Force: "+force+" | Tries: "+lTri+" | save: "+save+" | uF: "+uF+" | async: "+async);
         	if(config.getStringList("ignore")!=null) {
         		ignore=config.getStringList("ignore");//config.getString("ignore");
         		for(int i=0;i<App.ignore.size();i++) {
@@ -159,11 +167,17 @@ public class App extends Plugin implements Listener {
         		}
         		}catch(Exception e) {}
         	}
+        	enabled=!config.getBoolean("disabled");
         }catch(Exception er) {er.printStackTrace();getLogger().info("Uh oh! Seems like you need to remove my folder in the plugins folder!");}
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Login());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Register());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Salias());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Jservforce());
         ProxyServer.getInstance().getPluginManager().registerListener(this, new MyListener());
+    }
+    @Override
+    public void onDisable() {
+        ProxyServer.getInstance().getPluginManager().unregisterCommands(this);
+        ProxyServer.getInstance().getPluginManager().unregisterListeners(this);
     }
 }
