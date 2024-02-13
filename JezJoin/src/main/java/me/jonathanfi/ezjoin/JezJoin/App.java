@@ -20,6 +20,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 public class App extends Plugin implements Listener {
 	public static boolean enabled=true;
+	public static boolean enacmd=true;
 	public static boolean save=false;
 	public static boolean uF=false;
 	public static boolean async=false;
@@ -50,7 +51,7 @@ public class App extends Plugin implements Listener {
         	}
         	Db.sDir(pD);
         	File fil = new File(getDataFolder(),"config.yml");
-        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nsend-login: Lobby\nsend-reg: Lobby\nignore:\n  - \".\"\nblacklist:\n  - \"§\"\nwhitelist:\n  - \"-\"\nminlength: 3\nprefix: \"-\"\naddPrefix: false\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nmotd: web.JonHosting.com\nloginMsg: \"\\n\\n/login <password>\\n\\n\"\nregisterMsg: \"\\n\\n/register <password>\\n\\n\"\noffServMotD: \"§cOffline\"\nforceIP: false\nsave: false\nuseFiles: false\nasync: false\ndisabled: false");
+        	Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load("Hub: Hub\nsend-login: Lobby\nsend-reg: Lobby\nignore:\n  - \".\"\nblacklist:\n  - \"§\"\nwhitelist:\n  - \"-\"\nminlength: 3\nprefix: \"-\"\naddPrefix: false\nloginTries: 0\nloginPunishment: kick\nloginTp: true\nforce: false\nmotd: web.JonHosting.com\nloginMsg: \"\\n\\n/login <password>\\n\\n\"\nregisterMsg: \"\\n\\n/register <password>\\n\\n\"\noffServMotD: \"§cOffline\"\nforceIP: false\nsave: false\nuseFiles: false\nasync: false\ndisabled: false\ndisable_commands: false");
         	if(!fil.exists()) {
         		try{
         			ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,fil);
@@ -168,13 +169,18 @@ public class App extends Plugin implements Listener {
         		}catch(Exception e) {}
         	}
         	enabled=!config.getBoolean("disabled");
+        	enacmd=!config.getBoolean("disable_commands");
         }catch(Exception er) {er.printStackTrace();getLogger().info("Uh oh! Seems like you need to remove my folder in the plugins folder!");}
+        if(enacmd) {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Login());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Register());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Salias());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Jservforce());
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Spingconf());
-        ProxyServer.getInstance().getPluginManager().registerListener(this, new MyListener());
+        }
+        if(enabled) {
+        	ProxyServer.getInstance().getPluginManager().registerListener(this, new MyListener());
+        }
     }
     @Override
     public void onDisable() {

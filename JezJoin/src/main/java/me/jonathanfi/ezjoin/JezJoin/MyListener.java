@@ -88,33 +88,44 @@ public class MyListener implements Listener {
     	if(e.getConnection().getVirtualHost()!=null&&(ip=e.getConnection().getVirtualHost().getHostString())!=null&&Db.alias.containsKey(ip)) {
     		ServerInfo gg = ProxyServer.getInstance().getServerInfo(Db.alias.get(ip));
     		if(gg!=null) {
-    			if(Db.ipPing.containsKey(ip)) {
+    			final ServerPing LastPing=(Db.ipPing.containsKey(ip)?Db.ipPing.get(ip):null);
+    			//if(Db.ipPing.containsKey(ip)) {
+    				//LastPing = Db.ipPing.get(ip);
+    				if(LastPing != null) {
     				ServerPing og = e.getResponse();
-    				ServerPing LastPing = Db.ipPing.get(ip);
     				if(!Db.pingFavi.containsKey(ip))LastPing.setFavicon(og.getFaviconObject());
 					if(!Db.pingP.containsKey(ip))LastPing.setPlayers(og.getPlayers());
 					if(!Db.pingMotD.containsKey(ip))LastPing.setDescriptionComponent(og.getDescriptionComponent());
 					e.setResponse(LastPing);
-    			}
+    				}
+    			//}
     		final ProxyPingEvent ev = e;
     		Callback<ServerPing> callback = new Callback<ServerPing>() {
 				@SuppressWarnings("deprecation")
 				@Override
 				public void done(ServerPing result, Throwable error) {
-					Db.ipPing.put(ip, result);
 					ServerPing og = ev.getResponse();
+					if(og==null)og=new ServerPing();
+					if(error!=null) {
+						if(Db.pingF.containsKey(ip)) {
+						//net.md_5.bungee.chat.BaseComponentSerializer
+						//net.md_5.bungee.api.chat.BaseComponent desc = new net.md_5.bungee.api.chat.TextComponent(Db.pingF.get(ip));
+						og.setDescription(Db.pingF.get(ip));
+						if(result==null) result=og;
+						if(LastPing!=null) {
+							if(Db.pingFavi.containsKey(ip))result.setFavicon(LastPing.getFaviconObject());
+						}
+						result.setDescription(Db.pingF.get(ip));
+						}
+						ev.setResponse(og);
+					}else
 					if(result!=null) {
 						if(!Db.pingFavi.containsKey(ip))result.setFavicon(og.getFaviconObject());
 						if(!Db.pingP.containsKey(ip))result.setPlayers(og.getPlayers());
 						if(!Db.pingMotD.containsKey(ip))result.setDescriptionComponent(og.getDescriptionComponent());
 						ev.setResponse(result);
-					}else if(Db.pingF.containsKey(ip)){
-						//net.md_5.bungee.chat.BaseComponentSerializer
-						//net.md_5.bungee.api.chat.BaseComponent desc = new net.md_5.bungee.api.chat.TextComponent(Db.pingF.get(ip));
-						if(og==null)og=new ServerPing();
-						og.setDescription(Db.pingF.get(ip));
-						ev.setResponse(og);
 					}
+					Db.ipPing.put(ip, result);
 				}
     		};
     		//gg.getMotd();
