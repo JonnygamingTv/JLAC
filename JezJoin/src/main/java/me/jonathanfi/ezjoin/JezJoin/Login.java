@@ -16,23 +16,34 @@ public class Login extends Command {
 		if ((sender instanceof ProxiedPlayer)) {
 			ProxiedPlayer p = (ProxiedPlayer)sender;
 			if(args.length>0) {
-				if(Db.getPpl(p.getName(), args[0])) {Db.unsetLogp(p.getName());
-				Db.setsrv(p.getName(),"");Db.ison(p.getName(), true);
+				if(Db.getPpl(p.getName(), args[0])) {
+					Db.unsetLogp(p.getName());
+					Db.ison(p.getName(), true);
 				p.sendMessage(new ComponentBuilder("Logged in!").color(ChatColor.AQUA).create());
 				String servur = Db.getsrv(p.getName());
-				if(servur != "") {p.connect(ProxyServer.getInstance().getServerInfo(servur));return;}else {
+				if(servur != "") {
+					p.connect(ProxyServer.getInstance().getServerInfo(servur));
+				}else {
 				String ip;
 				if((ip=p.getPendingConnection().getVirtualHost().getHostString()) != null) {
 		    		if(Db.alias.containsKey(ip)) {
-		    			if(App.forceIP||Db.ipforce.containsKey(ip)) {p.connect(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));return;}
+		    			//if(App.forceIP||Db.ipforce.containsKey(ip)) {
+		    				servur = Db.alias.get(ip);
+		    			//}
 		    		}
 		    	}
-				if(MyListener.hub3!="") {p.connect(ProxyServer.getInstance().getServerInfo(MyListener.hub3));}
+				if(MyListener.hub3!="" && servur == "") {
+					servur = MyListener.hub3;
+				}
+				if(servur != "") p.connect(ProxyServer.getInstance().getServerInfo(servur));
 				}
 				}else{
-					p.sendMessage(new ComponentBuilder("Wrong password.").color(ChatColor.RED).create());if(App.lTri>0){if(Db.tri(p.getName(),true)>App.lTri){
+					p.sendMessage(new ComponentBuilder("Wrong password.").color(ChatColor.RED).create());
+					if(App.lTri>0){
+						if(Db.tri(p.getName(),true)>App.lTri){
 						p.disconnect();
-					}}
+						}
+					}
 				}
 			}else {p.sendMessage(new ComponentBuilder("/login <password>").color(ChatColor.RED).create());}
 		}

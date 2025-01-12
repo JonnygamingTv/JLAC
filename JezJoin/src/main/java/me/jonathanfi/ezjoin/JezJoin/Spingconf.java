@@ -31,8 +31,14 @@ public class Spingconf extends Command {
 				}else {
 					Db.pingMotD.remove(args[0]);
 				}
-				if(args.length>4) {if(args[4]!="") {Db.pingF.put(args[0],args[4]);}else{Db.pingF.remove(args[0]);}}
-				
+				if(args.length>4) {
+					if(args[4]!="") {Db.pingF.put(args[0],args[4]);}else{Db.pingF.remove(args[0]);}
+					if(args.length>5) {
+						if(args[5]=="true") {
+							Db.AutoOffline.put(args[0], true);
+						}else Db.AutoOffline.remove(args[0]);
+					}
+				}
 			}else{
 				System.out.println("[JezJoin] /Spingconf <ip> <playercount?> <icon?> <motd?> [message]");
 			}

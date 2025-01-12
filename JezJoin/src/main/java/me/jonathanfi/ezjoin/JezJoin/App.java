@@ -30,6 +30,7 @@ public class App extends Plugin implements Listener {
 	public static boolean fpx=false;
 	public static int minlength=0;
 	public static int lTri=0;
+	public static String hub="Hub";
 	public static String prefix=null;
 	public static String offservmotd="§cOffline";
 	public static String motd="JonHosting.com";
@@ -60,13 +61,13 @@ public class App extends Plugin implements Listener {
         	if(config.getBoolean("save"))save=true;
         	if(config.getBoolean("useFiles"))uF=true;
         	if(config.getBoolean("async"))async=true;
-        	String hub=config.getString("Hub");
+        	hub=config.getString("Hub");
         	if(hub!=null)if(hub!=""){MyListener.set(hub);}
         	hub=config.getString("send-reg");
         	if(hub!=null)if(hub!=""){MyListener.hub2=hub;}
         	hub=config.getString("send-login");
         	if(hub!=null)if(hub!=""){MyListener.hub3=hub;}
-        	if(config.getBoolean("tpserv")==false)tpserv=false;
+        	if(config.getBoolean("loginTp")==false)tpserv=false;
         	if(config.getBoolean("force"))force=true;
         	if(config.getBoolean("forceIP"))forceIP=true;
         	motd=config.getString("motd");
@@ -163,7 +164,8 @@ public class App extends Plugin implements Listener {
         				if(values.get(2).getAsBoolean()) {
         					Db.pingMotD.put(entry.getKey(), true);
         				}
-        				if(values.get(3)!=null)if(values.get(3).getAsString()!="")Db.pingF.put(entry.getKey(),values.get(3).getAsString());
+        				if(values.get(3)!=null && values.get(3).getAsString()!="")Db.pingF.put(entry.getKey(),values.get(3).getAsString());
+        				if(values.get(4)!=null && values.get(4).getAsBoolean())Db.AutoOffline.put(entry.getKey(),true);
         			}
         		}
         		}catch(Exception e) {}

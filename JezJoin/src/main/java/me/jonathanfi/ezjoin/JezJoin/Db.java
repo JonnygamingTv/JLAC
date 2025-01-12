@@ -22,6 +22,7 @@ public class Db {
 	public static Map<String,Boolean> pingMotD=new HashMap<String,Boolean>();
 	public static Map<String,Boolean> pingFavi=new HashMap<String,Boolean>();
 	public static Map<String,Boolean> pingP=new HashMap<String,Boolean>();
+	public static Map<String,Boolean> AutoOffline=new HashMap<String,Boolean>();
 	public static Map<String,String> pingF=new HashMap<String,String>();
 	public static Map<String,Boolean> ipforce=new HashMap<String,Boolean>();
 	public static Map<String,ServerPing> ipPing=new HashMap<String,ServerPing>();
@@ -47,10 +48,7 @@ public class Db {
 		pison.remove(n);
 	}
 	public static boolean on(String n) {
-		if(pison.containsKey(n)) {
-			return true;
-		}
-		return false;
+		return pison.containsKey(n);
 	}
 	public static void setsrv(String n, String s) {
 		if(s != "") {
@@ -66,8 +64,7 @@ public class Db {
 		return "";
 	}
 	public static boolean doexist(String name) {
-		if(exist.containsKey(name))return true;
-		return false;
+		return exist.containsKey(name);
 	}
 	public static void exists(String name) {
 		exist.put(name, true);
@@ -76,8 +73,7 @@ public class Db {
 		lppl.put(name,true);
 	}
 	public static boolean needLogp(String name) {
-		if(lppl.containsKey(name))return true;
-		return false;
+		return lppl.containsKey(name);
 	}
 	public static void unsetLogp(String name) {
 		lppl.remove(name);

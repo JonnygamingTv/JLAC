@@ -17,8 +17,21 @@ public class Register extends Command {
 			if(args.length>0) {
 				if(Db.getPpl(p.getName(), "")) {
 					p.sendMessage(new ComponentBuilder("Already registered.").color(ChatColor.RED).create());
-				}else{Db.setPpl(p.getName(), args[0]);Db.unsetLogp(p.getName());
-				p.sendMessage(new ComponentBuilder("Registered!").color(ChatColor.GREEN).create());Db.unsetLogp(p.getName());String servur = Db.getsrv(p.getName());if(servur != "") {p.connect(ProxyServer.getInstance().getServerInfo(servur));}else if(MyListener.hub2!="") {p.connect(ProxyServer.getInstance().getServerInfo(MyListener.hub2));}
+				}else{
+					Db.setPpl(p.getName(), args[0]);
+					Db.unsetLogp(p.getName());
+					Db.ison(p.getName(), true);
+				p.sendMessage(new ComponentBuilder("Registered!").color(ChatColor.GREEN).create());
+				// Db.unsetLogp(p.getName());
+				String servur = Db.getsrv(p.getName());
+				String ip;
+				if(servur != "") {
+					p.connect(ProxyServer.getInstance().getServerInfo(servur));
+				}else if((ip=p.getPendingConnection().getVirtualHost().getHostString()) != null && Db.alias.containsKey(ip) /*&& (App.forceIP||Db.ipforce.containsKey(ip))*/ ) {
+					p.connect(ProxyServer.getInstance().getServerInfo(Db.alias.get(ip)));
+				}else if(MyListener.hub2!="") {
+					p.connect(ProxyServer.getInstance().getServerInfo(MyListener.hub2));
+				}
 				}
 			}else{p.sendMessage(new ComponentBuilder("/register <password>").color(ChatColor.RED).create());}
 		}
