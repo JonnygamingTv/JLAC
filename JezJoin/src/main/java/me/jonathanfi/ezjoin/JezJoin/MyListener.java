@@ -190,6 +190,7 @@ public class MyListener implements Listener {
     			ignor=true;
     		}
     		if(!ignor) {
+    			e.setCancelled(false);
     		  if(!Db.doexist(name)) {
     			String requestUrl = "https://api.mojang.com/profiles/minecraft";
     			JsonArray payload = new JsonArray();
@@ -224,12 +225,9 @@ public class MyListener implements Listener {
     					return;
     				}
     			}catch(Exception er) {}
-    		  }else {
-    			  return;
-    		  }
     			e.getConnection().setOnlineMode(false);
-    			e.setCancelled(false);
-    			Db.setLogp(name);
+    		  }
+    			// Db.setLogp(name);
     		}
     	}
     }
