@@ -224,6 +224,8 @@ public class MyListener implements Listener {
     					return;
     				}
     			}catch(Exception er) {}
+    		  }else {
+    			  return;
     		  }
     			e.getConnection().setOnlineMode(false);
     			e.setCancelled(false);
